@@ -26,12 +26,12 @@ typedef struct {
  * @brief Structure containing accelerationand gyroscope value with a timestamp.
  */
 struct DataSet_t{
-  int32_t AXIS_X;
-  int32_t AXIS_Y;
-  int32_t AXIS_Z;
-  int32_t AXIS_GX;
-  int32_t AXIS_GY;
-  int32_t AXIS_GZ;
+  int16_t AXIS_X;
+  int16_t AXIS_Y;
+  int16_t AXIS_Z;
+  int16_t AXIS_GX;
+  int16_t AXIS_GY;
+  int16_t AXIS_GZ;
   uint32_t TIMESTAMP;
   uint16_t PEDOMETER;
 };

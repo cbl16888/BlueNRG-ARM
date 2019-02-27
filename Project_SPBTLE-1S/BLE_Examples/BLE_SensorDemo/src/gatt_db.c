@@ -73,10 +73,11 @@ extern uint8_t request_fifo_full_notify;
 extern uint8_t request_fifo_full_read;
 extern uint16_t connection_handle;
 extern BOOL sensor_board;
+extern uint16_t level;
 #ifndef SENSOR_EMULATION
 extern IMU_6AXES_DrvTypeDef *Imu6AxesDrv;
 extern LSM6DS3_DrvExtTypeDef *Imu6AxesDrvExt;
-extern uint8_t buffer[540];
+extern struct DataSet_t FIFO_data[30];
 #endif
 
 IMU_6AXES_StatusTypeDef GetAccAxesRaw(AxesRaw_t * acceleration_data, AxesRaw_t * gyroscope_data)
@@ -130,7 +131,7 @@ tBleStatus Add_Acc_Service(void)
 
   COPY_ACC_UUID(uuid);  
   Osal_MemCpy(&char_uuid.Char_UUID_128, uuid, 16);
-  ret =  aci_gatt_add_char(accServHandle, UUID_TYPE_128, &char_uuid, 20, CHAR_PROP_NOTIFY, ATTR_PERMISSION_NONE, 0,
+  ret =  aci_gatt_add_char(accServHandle, UUID_TYPE_128, &char_uuid, 18, CHAR_PROP_NOTIFY, ATTR_PERMISSION_NONE, 0,
                            16, 0, &accCharHandle);
   if (ret != BLE_STATUS_SUCCESS) goto fail;
 
@@ -183,12 +184,20 @@ tBleStatus FIFO_Notify(void)
   static int i=0;
   PRINTF("Test %u \n", i);
 
-  memcpy(buff, buffer+(18*sizeof(uint8_t)*i), 18*sizeof(uint8_t));
+	HOST_TO_LE_16(buff,-FIFO_data[i].AXIS_Y);
+  HOST_TO_LE_16(buff+2,FIFO_data[i].AXIS_X);
+  HOST_TO_LE_16(buff+4,-FIFO_data[i].AXIS_Z);
+	HOST_TO_LE_16(buff+6,FIFO_data[i].AXIS_GY);
+  HOST_TO_LE_16(buff+8,FIFO_data[i].AXIS_GX);
+  HOST_TO_LE_16(buff+10,FIFO_data[i].AXIS_GY);
+	HOST_TO_LE_32(buff+12,FIFO_data[i].TIMESTAMP);
+	HOST_TO_LE_16(buff+16, FIFO_data[i].PEDOMETER);
+	
 
   ret = aci_gatt_update_char_value_ext(connection_handle, accServHandle, accCharHandle, 1, 18, 0, 18, buff);
   if (ret == BLE_STATUS_SUCCESS){
 	  i++;
-	  if(i==20){ //to modify. it is wrong now
+	  if(i==(level-1)){ 
 		  i=0;
 		  request_fifo_full_notify=FALSE;
 	  }
