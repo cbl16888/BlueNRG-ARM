@@ -26,7 +26,7 @@
 #include "gatt_db.h"
 #include "osal.h"
 #include "SDK_EVAL_Config.h"
-
+#include "app_state.h"
 #include "LPS25HB.h"
 #include "lsm6ds3.h"
 
@@ -199,11 +199,11 @@ tBleStatus FIFO_Notify(void)
 	  i++;
 	  if(i==(level-1)){ 
 		  i=0;
-		  request_fifo_full_notify=FALSE;
+		  APP_FLAG_CLEAR(FIFO_NOTIFY);
 	  }
-  }else if(ret != BLE_STATUS_INSUFFICIENT_RESOURCES){
-	  PRINTF("Error while updating acc characteristic: 0x%02X\n",ret) ;
-	  return BLE_STATUS_ERROR ;
+  }else if(ret == BLE_STATUS_INSUFFICIENT_RESOURCES){
+	  APP_FLAG_SET(TX_BUFFER_FULL);
+	  return BLE_STATUS_SUCCESS;
   }
 
   return BLE_STATUS_SUCCESS;

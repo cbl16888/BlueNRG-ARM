@@ -22,6 +22,7 @@
 #include "gp_timer.h"
 #include "SDK_EVAL_Config.h"
 #include "gatt_db.h"
+#include "app_state.h"
 
 //#define SENSOR_EMULATION 1
 
@@ -87,7 +88,8 @@ uint8_t start_request=FALSE;
 volatile uint8_t request_free_fall_notify = FALSE; 
 extern uint8_t request_fifo_full_notify;
 extern uint8_t request_fifo_full_read;
-extern uint16_t startCharHandle;
+extern uint16_t accCharHandle;
+extern volatile int app_flags;
 uint16_t available_buffers;
 
   
@@ -268,33 +270,30 @@ void Set_DeviceConnectable(void)
 void APP_Tick(void)
 {
   /* Make the device discoverable */
-  if(set_connectable) {
+	if(APP_FLAG(SET_CONNECTABLE))
+  {
     Set_DeviceConnectable();
-    set_connectable = FALSE;
+    APP_FLAG_CLEAR(SET_CONNECTABLE);
   }
 
 #if UPDATE_CONN_PARAM      
   /* Connection parameter update request */
-  if(connected && !l2cap_request_sent && l2cap_req_timer_expired){
-    aci_l2cap_connection_parameter_update_req(connection_handle, 200, 200, 0, 3200);
+  if(APP_FLAG(CONNECTED) && !APP_FLAG(L2CAP_PARAM_UPD_SENT) && l2cap_req_timer_expired){
+    aci_l2cap_connection_parameter_update_req(connection_handle, 500, 500, 0, 3200);
     aci_gatt_exchange_config(connection_handle);
-    l2cap_request_sent = TRUE;
+    APP_FLAG_SET(L2CAP_PARAM_UPD_SENT);
   }
 #endif
 
-  if(connected) {
-    /* Activity Led */
-    SdkEvalLedToggle(LED1);
-    if(request_fifo_full_notify==TRUE){
-    	FIFO_Notify();
-    }
+  if(APP_FLAG(CONNECTED) && !APP_FLAG(TX_BUFFER_FULL) && APP_FLAG(FIFO_NOTIFY)) {
+    FIFO_Notify();
   }
 
   /*LSM6DS3 FIFO management*/
-  if(request_fifo_full_read== TRUE){
-	FIFO_Full_Read();
-	request_fifo_full_read= FALSE;
-	request_fifo_full_notify= TRUE;
+  if(APP_FLAG(EMPTY_FIFO)){
+		FIFO_Full_Read();
+		APP_FLAG_CLEAR(EMPTY_FIFO);
+		APP_FLAG_SET(FIFO_NOTIFY);
   }
 }
 
@@ -317,8 +316,9 @@ void hci_le_connection_complete_event(uint8_t Status,
                                       uint16_t Supervision_Timeout,
                                       uint8_t Master_Clock_Accuracy)
 {
-  connected = TRUE;
   connection_handle = Connection_Handle;
+  APP_FLAG_SET(CONNECTED);
+	
   PRINTF("Device connected \n");
 
 #if UPDATE_CONN_PARAM    
@@ -366,12 +366,16 @@ void hci_disconnection_complete_event(uint8_t Status,
                                       uint16_t Connection_Handle,
                                       uint8_t Reason)
 {
-  connected = FALSE;
+  APP_FLAG_CLEAR(CONNECTED);
   /* Make the device connectable again. */
-  set_connectable = TRUE;
-  connection_handle =0;
-  
-  SdkEvalLedOn(LED1);//activity led
+  APP_FLAG_SET(SET_CONNECTABLE);
+  APP_FLAG_CLEAR(NOTIFICATIONS_ENABLED);
+  APP_FLAG_CLEAR(TX_BUFFER_FULL);
+
+  APP_FLAG_CLEAR(START_READ_TX_CHAR_HANDLE);
+  APP_FLAG_CLEAR(END_READ_TX_CHAR_HANDLE);
+  APP_FLAG_CLEAR(START_READ_RX_CHAR_HANDLE); 
+  APP_FLAG_CLEAR(END_READ_RX_CHAR_HANDLE);
   PRINTF("Device disconnected \n");
 #if ST_OTA_FIRMWARE_UPGRADE_SUPPORT
   OTA_terminate_connection();
@@ -389,8 +393,7 @@ with MTU of 23 bytes are available).
 */
 void aci_gatt_tx_pool_available_event(uint16_t Connection_Handle,
                                       uint16_t Available_Buffers){
-	available_buffers=Available_Buffers;
-	printf("Number of available buffers %u \n", available_buffers);
+	APP_FLAG_CLEAR(TX_BUFFER_FULL);
 }
 /*******************************************************************************
  * Function Name  : aci_gatt_read_permit_req_event.
@@ -437,14 +440,11 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
                                        uint16_t Attr_Data_Length,
                                        uint8_t Attr_Data[])
 {
-if(Attr_Handle == startCharHandle + 1){
-	if(Attr_Data[0]=='1'){
-		  start_request=TRUE;
-	  }else if(Attr_Data[0]=='0'){
-		  start_request=FALSE;
+if(Attr_Handle == accCharHandle + 2){
+	if(Attr_Data[0]==0x01){
+		  APP_FLAG_SET(NOTIFICATIONS_ENABLED);
 	}
 }
-
 
 #if ST_OTA_FIRMWARE_UPGRADE_SUPPORT
   OTA_Write_Request_CB(Connection_Handle, Attr_Handle, Attr_Data_Length, Attr_Data);

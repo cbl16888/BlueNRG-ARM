@@ -32,7 +32,7 @@
 .\release\objects\sensor.o: ..\..\..\..\..\Library\BLE_Application\layers_inc\sm.h
 .\release\objects\sensor.o: ..\..\..\..\..\Library\Bluetooth_LE\inc\bluenrg1_stack.h
 .\release\objects\sensor.o: ..\..\..\..\..\Library\Bluetooth_LE\inc\bluenrg1_events.h
-.\release\objects\sensor.o: ..\..\..\..\..\Library\hal\inc\gp_timer.h
+.\release\objects\sensor.o: ..\..\inc\gp_timer.h
 .\release\objects\sensor.o: ..\..\..\..\..\Library\hal\inc\clock.h
 .\release\objects\sensor.o: ..\..\..\..\..\Library\SDK_Eval_BlueNRG1\inc\SDK_EVAL_Config.h
 .\release\objects\sensor.o: ..\..\..\..\..\Library\SDK_Eval_BlueNRG1\inc\USER_Platform_Configuration_auto.h
@@ -44,6 +44,7 @@
 .\release\objects\sensor.o: ..\..\..\..\..\Library\SDK_Eval_BlueNRG1\inc\SDK_EVAL_SPI.h
 .\release\objects\sensor.o: ..\..\inc\gatt_db.h
 .\release\objects\sensor.o: ..\..\..\..\..\Library\SDK_Eval_BlueNRG1\inc\lsm6ds3.h
+.\release\objects\sensor.o: ..\..\inc\app_state.h
 .\release\objects\sensor.o: ..\..\..\..\..\Library\SDK_Eval_BlueNRG1\inc\LPS25HB.h
 .\release\objects\sensor.o: ..\..\..\..\..\Library\BlueNRG1_Periph_Driver\inc\lsm6ds3_reg.h
 .\release\objects\sensor.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

@@ -228,6 +228,7 @@ NOTEs:
 #include "lsm6ds3_reg.h"
 #include "lsm6ds3.h"
 #include "lsm6ds3_hal.h"
+#include "app_state.h"
 
 
 
@@ -265,6 +266,7 @@ timestamp_t timestamp;
 lsm6ds3_int1_route_t int_1_reg;
 uint16_t pattern_len, pattern_numbers, number_of_patterns;
 static uint8_t whoamI, rst;
+volatile int app_flags = SET_CONNECTABLE;
 
 /* Private function prototypes -----------------------------------------------*/
 int32_t platform_write(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len);
@@ -338,17 +340,10 @@ int main(void)
 
     /* Application Tick */
     APP_Tick();
-    
-
-    //LSM6DS3_IO_Read(&tmp[0], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_FIFO_DATA_OUT_L, 2);
-
-    /* Power Save management - not working because of the BLE radio stack status*/
-    /* Wait for the UART FIFO to empty before turning the chip off*/
-    while(SdkEvalComIOTxFifoNotEmpty() || SdkEvalComUARTBusy());
-
-    if(request_fifo_full_read==FALSE && request_fifo_full_notify==FALSE && connected && l2cap_request_accepted && start_request){
-    	BlueNRG_Sleep(SLEEPMODE_NOTIMER, WAKEUP_IO12, WAKEUP_IOx_HIGH<<WAKEUP_IO12_SHIFT_MASK);
-    }
+		
+		if(APP_FLAG(CONNECTED) && APP_FLAG(L2CAP_PARAM_UPD_SENT) && !APP_FLAG(FIFO_NOTIFY) && APP_FLAG(NOTIFICATIONS_ENABLED)){
+			BlueNRG_Sleep(SLEEPMODE_NOTIMER, WAKEUP_IO12, WAKEUP_IOx_HIGH<<WAKEUP_IO12_SHIFT_MASK);
+		}
 
     //PRINTF("%u %u %u %u %u \n", request_fifo_full_read,request_fifo_full_notify,connected,l2cap_request_accepted,start_request);
 
@@ -356,7 +351,7 @@ int main(void)
     lsm6ds3_fifo_wtm_flag_get(&dev_ctx, &fifo_status);
     if(fifo_status==1)
     {
-      request_fifo_full_read= TRUE;
+      APP_FLAG_SET(EMPTY_FIFO);
       //PRINTF("FIFO WATERMARK REACHED \n");
     }
 
@@ -379,16 +374,6 @@ int main(void)
     }
 #endif /* ST_USE_OTA_SERVICE_MANAGER_APPLICATION */
   }/* while (1) */
-}
-
-/****************** BlueNRG-1 Sleep Management Callback ********************************/
-
-SleepModes App_SleepMode_Check(SleepModes sleepMode)
-{
-  if(request_free_fall_notify || SdkEvalComIOTxFifoNotEmpty() || SdkEvalComUARTBusy())
-    return SLEEPMODE_RUNNING;
-  
-  return SLEEPMODE_NOTIMER;
 }
 
 /***************************************************************************************/

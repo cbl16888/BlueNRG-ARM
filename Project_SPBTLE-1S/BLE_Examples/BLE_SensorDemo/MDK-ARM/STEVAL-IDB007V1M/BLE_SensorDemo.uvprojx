@@ -407,6 +407,11 @@
               <FileType>1</FileType>
               <FilePath>../../../../../Library/hal/src/sleep.c</FilePath>
             </File>
+            <File>
+              <FileName>gp_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\src\gp_timer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1066,6 +1071,11 @@
               <FileType>1</FileType>
               <FilePath>../../../../../Library/hal/src/sleep.c</FilePath>
             </File>
+            <File>
+              <FileName>gp_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\src\gp_timer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1656,6 +1666,11 @@
               <FileType>1</FileType>
               <FilePath>../../../../../Library/hal/src/sleep.c</FilePath>
             </File>
+            <File>
+              <FileName>gp_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\src\gp_timer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2245,6 +2260,11 @@
               <FileName>sleep.c</FileName>
               <FileType>1</FileType>
               <FilePath>../../../../../Library/hal/src/sleep.c</FilePath>
+            </File>
+            <File>
+              <FileName>gp_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\src\gp_timer.c</FilePath>
             </File>
           </Files>
         </Group>

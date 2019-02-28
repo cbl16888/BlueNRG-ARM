@@ -50,3 +50,4 @@
 .\release\objects\sensordemo_main.o: ..\..\..\..\..\Library\BlueNRG1_Periph_Driver\inc\lsm6ds3_reg.h
 .\release\objects\sensordemo_main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\release\objects\sensordemo_main.o: ..\..\..\..\..\Library\SDK_Eval_BlueNRG1\inc\lsm6ds3_hal.h
+.\release\objects\sensordemo_main.o: ..\..\inc\app_state.h
