@@ -250,7 +250,7 @@ void Set_DeviceConnectable(void)
   ret = aci_gap_set_discoverable(ADV_IND,
                                 (ADV_INTERVAL_MIN_MS*1000)/625,(ADV_INTERVAL_MAX_MS*1000)/625,
                                  STATIC_RANDOM_ADDR, NO_WHITE_LIST_USE,
-                                 sizeof(local_name), local_name, 0, NULL, 0x06, 0x06); 
+                                 sizeof(local_name), local_name, 0, NULL, 0, 0); 
   if(ret != BLE_STATUS_SUCCESS)
   {
     PRINTF("aci_gap_set_discoverable() failed: 0x%02x\r\n",ret);
@@ -320,6 +320,14 @@ void hci_le_connection_complete_event(uint8_t Status,
   APP_FLAG_SET(CONNECTED);
 	
   PRINTF("Device connected \n");
+
+#if UPDATE_CONN_PARAM    
+  l2cap_request_sent = FALSE;
+  HAL_VTimerStart_ms(UPDATE_TIMER, CLOCK_SECOND*2);
+  {
+    l2cap_req_timer_expired = FALSE;
+  }
+#endif
     
 }/* end hci_le_connection_complete_event() */
 
@@ -432,23 +440,11 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
                                        uint16_t Attr_Data_Length,
                                        uint8_t Attr_Data[])
 {
-		lsm6ds3_ctx_t dev_ctx;
-	  dev_ctx.write_reg = platform_write;
-	  dev_ctx.read_reg = platform_read;
-	if(Attr_Handle == accCharHandle + 2){
-		if(Attr_Data[0]==0x01){
-				APP_FLAG_SET(NOTIFICATIONS_ENABLED);
-				lsm6ds3_timestamp_rst_set(&dev_ctx);
-				SdkEvalLedOn(LED3);
-				#if UPDATE_CONN_PARAM    
-					l2cap_request_sent = FALSE;
-					HAL_VTimerStart_ms(UPDATE_TIMER, CLOCK_SECOND*2);
-					{
-						l2cap_req_timer_expired = FALSE;
-					}
-				#endif
-		}
+if(Attr_Handle == accCharHandle + 2){
+	if(Attr_Data[0]==0x01){
+		  APP_FLAG_SET(NOTIFICATIONS_ENABLED);
 	}
+}
 
 #if ST_OTA_FIRMWARE_UPGRADE_SUPPORT
   OTA_Write_Request_CB(Connection_Handle, Attr_Handle, Attr_Data_Length, Attr_Data);
