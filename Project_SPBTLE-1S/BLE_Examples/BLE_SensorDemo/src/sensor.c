@@ -50,7 +50,7 @@
 #define PRINTF(...)
 #endif
 
-#define UPDATE_CONN_PARAM 0
+#define UPDATE_CONN_PARAM 1
 #define  ADV_INTERVAL_MIN_MS  100
 #define  ADV_INTERVAL_MAX_MS  120
 
@@ -278,7 +278,7 @@ void Set_DeviceConnectable(void)
 #if UPDATE_CONN_PARAM      
   /* Connection parameter update request */
   if(APP_FLAG(CONNECTED) && !APP_FLAG(L2CAP_PARAM_UPD_SENT) && l2cap_req_timer_expired){
-    aci_l2cap_connection_parameter_update_req(connection_handle, 500, 500, 0, 3200);
+    aci_l2cap_connection_parameter_update_req(connection_handle, 10, 10, 0, 3200);
     aci_gatt_exchange_config(connection_handle);
     APP_FLAG_SET(L2CAP_PARAM_UPD_SENT);
   }
@@ -434,11 +434,20 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 		lsm6ds3_ctx_t dev_ctx;
 	  dev_ctx.write_reg = platform_write;
 	  dev_ctx.read_reg = platform_read;
+		uint8_t fifo_status;
+		uint8_t dummytempReg[2]= {0, 0};
 	if(Attr_Handle == accCharHandle + 2){
 		if(Attr_Data[0]==0x02){
 				APP_FLAG_SET(NOTIFICATIONS_ENABLED);
+				/*Empty LSM6DS3 FIFO */
+				while(fifo_status!=1){
+					LSM6DS3_IO_Read(&dummytempReg[0], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_FIFO_DATA_OUT_L, 2);
+					lsm6ds3_fifo_full_flag_get(&dev_ctx, &fifo_status);
+				}
+				/*Reset timestamp */
 				lsm6ds3_timestamp_rst_set(&dev_ctx);
 				SdkEvalLedOn(LED3);
+				/*Connection update */
 				#if UPDATE_CONN_PARAM    
 					l2cap_request_sent = FALSE;
 					HAL_VTimerStart_ms(UPDATE_TIMER, CLOCK_SECOND*2);
