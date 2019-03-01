@@ -342,21 +342,14 @@ int main(void)
     APP_Tick();
 		
 		if(APP_FLAG(CONNECTED) && APP_FLAG(L2CAP_PARAM_UPD_SENT) && !APP_FLAG(FIFO_NOTIFY) && APP_FLAG(NOTIFICATIONS_ENABLED)){
-			BlueNRG_Sleep(SLEEPMODE_NOTIMER, WAKEUP_IO12, WAKEUP_IOx_HIGH<<WAKEUP_IO12_SHIFT_MASK);
+			BlueNRG_Sleep(SLEEPMODE_NOTIMER, 0, 0);
+			/* Set the FIFO full flag when getting out of sleep mode */
+			lsm6ds3_fifo_full_flag_get(&dev_ctx, &fifo_status);
+			if(fifo_status==0)
+			{
+				APP_FLAG_SET(EMPTY_FIFO);
+			}
 		}
-
-    //PRINTF("%u %u %u %u %u \n", request_fifo_full_read,request_fifo_full_notify,connected,l2cap_request_accepted,start_request);
-
-    /* Set the FIFO full flag when getting out of sleep mode */
-    lsm6ds3_fifo_wtm_flag_get(&dev_ctx, &fifo_status);
-    if(fifo_status==1)
-    {
-      APP_FLAG_SET(EMPTY_FIFO);
-      //PRINTF("FIFO WATERMARK REACHED \n");
-    }
-
-
-    //PRINTF("BLUE NRG WOKE UP SOURCE %i \n", BlueNRG_WakeupSource());
 
 #if ST_OTA_FIRMWARE_UPGRADE_SUPPORT
     /* Check if the OTA firmware upgrade session has been completed */

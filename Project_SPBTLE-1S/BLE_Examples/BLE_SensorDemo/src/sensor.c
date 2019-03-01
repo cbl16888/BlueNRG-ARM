@@ -278,7 +278,7 @@ void Set_DeviceConnectable(void)
 #if UPDATE_CONN_PARAM      
   /* Connection parameter update request */
   if(APP_FLAG(CONNECTED) && !APP_FLAG(L2CAP_PARAM_UPD_SENT) && l2cap_req_timer_expired){
-    aci_l2cap_connection_parameter_update_req(connection_handle, 10, 10, 0, 3200);
+    aci_l2cap_connection_parameter_update_req(connection_handle, 50, 50, 0, 3200);
     aci_gatt_exchange_config(connection_handle);
     APP_FLAG_SET(L2CAP_PARAM_UPD_SENT);
   }
@@ -292,7 +292,6 @@ void Set_DeviceConnectable(void)
   if(APP_FLAG(EMPTY_FIFO)){
 		FIFO_Full_Read();
 		APP_FLAG_CLEAR(EMPTY_FIFO);
-		APP_FLAG_SET(FIFO_NOTIFY);
   }
 }
 
@@ -437,7 +436,7 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 		uint8_t fifo_status;
 		uint8_t dummytempReg[2]= {0, 0};
 	if(Attr_Handle == accCharHandle + 2){
-		if(Attr_Data[0]==0x02){
+		if(Attr_Data[0]==0x01){
 				APP_FLAG_SET(NOTIFICATIONS_ENABLED);
 				/*Empty LSM6DS3 FIFO */
 				while(fifo_status!=1){
@@ -491,8 +490,23 @@ void FIFO_Full_Read(void){
 	  dev_ctx.write_reg = platform_write;
 	  dev_ctx.read_reg = platform_read;
 	  lsm6ds3_fifo_data_level_get(&dev_ctx, &level); //gives the number of words (1 word=2 bytes)
-	  level/=9;
-	  PRINTF("The number of sets is %u \n", level);
+		if(level!=0){
+			level/=9;	
+		}
+		if(level>30){
+			//PRINTF("The number of sets was %u ", level);
+			level=30;
+			//PRINTF("but was reduced to %u \n", level);
+			APP_FLAG_SET(FIFO_NOTIFY);
+		}else if(level==0 || level==1){
+			//PRINTF("The number of sets is %u ", level);
+			//PRINTF("and there is no need to notify. Flag reset \n");
+			APP_FLAG_CLEAR(FIFO_NOTIFY);
+			APP_FLAG_CLEAR(EMPTY_FIFO);
+		}else{
+			//PRINTF("The number of sets is %u \n", level);
+			APP_FLAG_SET(FIFO_NOTIFY);
+		}
 	  for(int i=0; i<((level-1)*9*2);i+=2){ //We have to leave one data set in the FIFO
 		  LSM6DS3_IO_Read(&tempReg[0], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_FIFO_DATA_OUT_L, 2);
 		  buffer[i]=tempReg[0];

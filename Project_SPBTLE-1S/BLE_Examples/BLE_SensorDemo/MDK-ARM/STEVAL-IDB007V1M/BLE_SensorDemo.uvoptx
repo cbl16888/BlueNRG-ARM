@@ -190,6 +190,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>level</ItemText>
         </Ww>
+        <Ww>
+          <count>7</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>app_flags</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
