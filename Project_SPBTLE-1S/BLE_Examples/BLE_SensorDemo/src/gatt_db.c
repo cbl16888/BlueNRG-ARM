@@ -131,7 +131,7 @@ tBleStatus Add_Acc_Service(void)
 
   COPY_ACC_UUID(uuid);  
   Osal_MemCpy(&char_uuid.Char_UUID_128, uuid, 16);
-  ret =  aci_gatt_add_char(accServHandle, UUID_TYPE_128, &char_uuid, 18, CHAR_PROP_NOTIFY, ATTR_PERMISSION_NONE, 0,
+  ret =  aci_gatt_add_char(accServHandle, UUID_TYPE_128, &char_uuid, 18, CHAR_PROP_NOTIFY | CHAR_PROP_INDICATE, ATTR_PERMISSION_NONE, 0,
                            16, 0, &accCharHandle);
   if (ret != BLE_STATUS_SUCCESS) goto fail;
 
@@ -194,7 +194,7 @@ tBleStatus FIFO_Notify(void)
 	HOST_TO_LE_16(buff+16, FIFO_data[i].PEDOMETER);
 	
 
-  ret = aci_gatt_update_char_value_ext(connection_handle, accServHandle, accCharHandle, 1, 18, 0, 18, buff);
+  ret = aci_gatt_update_char_value_ext(connection_handle, accServHandle, accCharHandle, 2, 18, 0, 18, buff);
   if (ret == BLE_STATUS_SUCCESS){
 	  i++;
 	  if(i==(level-1)){ 

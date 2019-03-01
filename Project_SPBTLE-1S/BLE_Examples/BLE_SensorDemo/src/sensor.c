@@ -50,7 +50,7 @@
 #define PRINTF(...)
 #endif
 
-#define UPDATE_CONN_PARAM 1
+#define UPDATE_CONN_PARAM 0
 #define  ADV_INTERVAL_MIN_MS  100
 #define  ADV_INTERVAL_MAX_MS  120
 
@@ -67,12 +67,11 @@ uint16_t level;
 BOOL sensor_board = FALSE; // It is True if sensor boad has been detected
 
 int connected = FALSE;
-#if UPDATE_CONN_PARAM
 #define UPDATE_TIMER 2 //TBR
 int l2cap_request_sent = FALSE;
 int l2cap_request_accepted = FALSE;
 static uint8_t l2cap_req_timer_expired = FALSE; 
-#endif
+
 
 #ifndef SENSOR_EMULATION
 PRESSURE_DrvTypeDef* xLPS25HBDrv = &LPS25HBDrv;  
@@ -267,7 +266,7 @@ void Set_DeviceConnectable(void)
  * Output         : None.
  * Return         : None.
  *******************************************************************************/
-void APP_Tick(void)
+ void APP_Tick(void)
 {
   /* Make the device discoverable */
 	if(APP_FLAG(SET_CONNECTABLE))
@@ -436,7 +435,7 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 	  dev_ctx.write_reg = platform_write;
 	  dev_ctx.read_reg = platform_read;
 	if(Attr_Handle == accCharHandle + 2){
-		if(Attr_Data[0]==0x01){
+		if(Attr_Data[0]==0x02){
 				APP_FLAG_SET(NOTIFICATIONS_ENABLED);
 				lsm6ds3_timestamp_rst_set(&dev_ctx);
 				SdkEvalLedOn(LED3);
