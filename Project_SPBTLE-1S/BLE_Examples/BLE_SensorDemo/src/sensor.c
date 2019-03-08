@@ -494,9 +494,9 @@ void FIFO_Full_Read(void){
 			level/=9;	
 		}
 		if(level>30){
-			//PRINTF("The number of sets was %u ", level);
+			PRINTF("The number of sets was %u ", level);
 			level=30;
-			//PRINTF("but was reduced to %u \n", level);
+			PRINTF("but was reduced to %u \n", level);
 			APP_FLAG_SET(FIFO_NOTIFY);
 		}else if(level==0 || level==1){
 			//PRINTF("The number of sets is %u ", level);
@@ -504,7 +504,7 @@ void FIFO_Full_Read(void){
 			APP_FLAG_CLEAR(FIFO_NOTIFY);
 			APP_FLAG_CLEAR(EMPTY_FIFO);
 		}else{
-			//PRINTF("The number of sets is %u \n", level);
+			PRINTF("The number of sets is %u \n", level);
 			APP_FLAG_SET(FIFO_NOTIFY);
 		}
 	  for(int i=0; i<((level-1)*9*2);i+=2){ //We have to leave one data set in the FIFO
