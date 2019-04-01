@@ -108,3 +108,6 @@ Project_SPBTLE-1S/BLE_Examples/BLE_SensorDemo/MDK-ARM/STEVAL-IDB007V1M/Release/O
 Project_SPBTLE-1S/BLE_Examples/BLE_SensorDemo/MDK-ARM/STEVAL-IDB007V1M/Release/Objects/BLE_SensorDemo.axf
 Project_SPBTLE-1S/BLE_Examples/BLE_SensorDemo/MDK-ARM/STEVAL-IDB007V1M/Release/Objects/lps25hb.crf
 Project_SPBTLE-1S/BLE_Examples/BLE_SensorDemo/MDK-ARM/STEVAL-IDB007V1M/Release/Objects/gatt_db.crf
+Project_SPBTLE-1S/BLE_Examples/BLE_SensorDemo/MDK-ARM/STEVAL-IDB007V1M/Release/Objects/gatt_db_1.o
+Project_SPBTLE-1S/BLE_Examples/BLE_SensorDemo/MDK-ARM/STEVAL-IDB007V1M/Release/Objects/gatt_db_1.crf
+Project_SPBTLE-1S/BLE_Examples/BLE_SensorDemo/MDK-ARM/STEVAL-IDB007V1M/Release/Objects/gatt_db_1.d
