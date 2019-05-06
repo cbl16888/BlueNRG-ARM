@@ -45,6 +45,10 @@ extern volatile int app_flags;
 #define END_READ_TX_CHAR_HANDLE   0x200
 #define START_READ_RX_CHAR_HANDLE 0x400 
 #define END_READ_RX_CHAR_HANDLE   0x800
+#define HIGH_POWER								0x1000
+#define SET_HIGH_POWER						0x2000
+#define LOW_POWER									0x4000
+#define SET_LOW_POWER					  	0x8000
 /**
  * @}
  */

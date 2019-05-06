@@ -802,7 +802,13 @@ typedef struct {
 */
 #define  LSM6DS3_XG_SENSORHUB12_REG                       0x39
 
+#define  LSM6DS3_XG_SLV0_ADD															0x02  //I2C adress slave and r/w selection
 
+#define  LSM6DS3_XG_SLV0_SUBADD														0x03	//I2C adress of the register for the operation
+
+#define  LSM6DS3_XG_SLAVE0_CONFIG													0x04  //slave0 config register
+
+#define  LSM6DS3_XG_DATAWRITE_SRC_MODE_SUB_SLV0						0x0E //data to be written to the specified register
 
 
 /***************************************** GYROSCOPE REGISTERS ********************************************/

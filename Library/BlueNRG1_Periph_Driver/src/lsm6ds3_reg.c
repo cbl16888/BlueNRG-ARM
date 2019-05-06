@@ -37,6 +37,12 @@
 #include "LSM6DS3.h"
 #include "lsm6ds3_hal.h"
 
+#if DEBUG
+#include <stdio.h>
+#define PRINTF(...) printf(__VA_ARGS__)
+#else
+#define PRINTF(...)
+#endif
 
 
 /**

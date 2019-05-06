@@ -468,7 +468,7 @@ void LSM6DS3_FIFO_init(void){
     * Set FIFO sensor decimators
     */
    lsm6ds3_fifo_xl_batch_set(&dev_ctx, LSM6DS3_FIFO_XL_NO_DEC);
-   lsm6ds3_fifo_gy_batch_set(&dev_ctx, LSM6DS3_FIFO_XL_NO_DEC);
+   lsm6ds3_fifo_gy_batch_set(&dev_ctx, LSM6DS3_FIFO_GY_NO_DEC);
    lsm6ds3_fifo_dataset_4_batch_set(&dev_ctx, LSM6DS3_FIFO_DS4_NO_DEC);
 
    /*

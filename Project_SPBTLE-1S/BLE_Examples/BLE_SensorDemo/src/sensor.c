@@ -162,8 +162,8 @@ uint8_t Sensor_DeviceInit()
     return ret;
   }
   
-  /* Set the TX power -2 dBm */
-  aci_hal_set_tx_power_level(1, 4);
+  /* Set the TX power 8 dBm */
+  aci_hal_set_tx_power_level(1, 7);
   
   /* GATT Init */
   ret = aci_gatt_init();
@@ -281,18 +281,30 @@ void Set_DeviceConnectable(void)
     aci_l2cap_connection_parameter_update_req(connection_handle, 50, 50, 0, 3200);
     aci_gatt_exchange_config(connection_handle);
     APP_FLAG_SET(L2CAP_PARAM_UPD_SENT);
+		APP_FLAG_SET(LOW_POWER);
   }
 #endif
 
   if(APP_FLAG(CONNECTED) && !APP_FLAG(TX_BUFFER_FULL) && APP_FLAG(FIFO_NOTIFY)) {
     FIFO_Notify();
   }
-
+	
   /*LSM6DS3 FIFO management*/
   if(APP_FLAG(EMPTY_FIFO)){
 		FIFO_Full_Read();
 		APP_FLAG_CLEAR(EMPTY_FIFO);
   }
+	
+	/* Power management */
+	if(APP_FLAG(CONNECTED)){
+		if(APP_FLAG(SET_HIGH_POWER)){
+			aci_hal_set_tx_power_level(7 ,1); 
+			aci_l2cap_connection_parameter_update_req(connection_handle, 6, 6, 0, 3200); 
+		}else if(APP_FLAG(SET_LOW_POWER)){
+			aci_hal_set_tx_power_level(4 ,1); 
+			aci_l2cap_connection_parameter_update_req(connection_handle, 50, 50, 0, 3200); 
+		}
+	}
 }
 
 /* ***************** BlueNRG-1 Stack Callbacks ********************************/
@@ -336,6 +348,16 @@ void aci_l2cap_connection_update_resp_event(uint16_t Connection_Handle,
 	{
 		PRINTF("Connection update accepted \n");
 		l2cap_request_accepted=TRUE;
+		if(APP_FLAG(SET_HIGH_POWER)){
+			APP_FLAG_CLEAR(SET_HIGH_POWER);
+			APP_FLAG_CLEAR(LOW_POWER);
+			APP_FLAG_SET(HIGH_POWER);
+		}
+		if(APP_FLAG(SET_LOW_POWER)){
+			APP_FLAG_CLEAR(SET_LOW_POWER);
+			APP_FLAG_CLEAR(HIGH_POWER);
+			APP_FLAG_SET(LOW_POWER);
+		}
 	}else{
 		PRINTF("Connection update refused \n");
 		l2cap_request_accepted=FALSE;
@@ -487,22 +509,37 @@ void FIFO_Full_Read(void){
 	  static uint8_t tempReg[2]= {0, 0};
 		float sensitivity_acc = 0.0f;
     float sensitivity_gyr = 0.0f;
+		uint8_t fifo_status;
 	  dev_ctx.write_reg = platform_write;
 	  dev_ctx.read_reg = platform_read;
 	  lsm6ds3_fifo_data_level_get(&dev_ctx, &level); //gives the number of words (1 word=2 bytes)
 		if(level!=0){
 			level/=9;	
 		}
-		if(level>30){
+		if(level>400){
+			/*Empty FIFO to prevent errors*/
+			while(fifo_status!=1){
+				LSM6DS3_IO_Read(&tempReg[0], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_FIFO_DATA_OUT_L, 2);
+				lsm6ds3_fifo_full_flag_get(&dev_ctx, &fifo_status);
+			}
+			level=0;
+			PRINTF("8 seconds of data were lost due to poor BLE signal quality. FIFO was refreshed \n");
+		}else if(level>30){
 			PRINTF("The number of sets was %u ", level);
 			level=30;
 			PRINTF("but was reduced to %u \n", level);
 			APP_FLAG_SET(FIFO_NOTIFY);
+			if(APP_FLAG(LOW_POWER)){
+				APP_FLAG_SET(SET_HIGH_POWER);
+			}
 		}else if(level==0 || level==1){
 			//PRINTF("The number of sets is %u ", level);
 			//PRINTF("and there is no need to notify. Flag reset \n");
 			APP_FLAG_CLEAR(FIFO_NOTIFY);
 			APP_FLAG_CLEAR(EMPTY_FIFO);
+			if(APP_FLAG(HIGH_POWER)){
+				APP_FLAG_SET(SET_LOW_POWER);
+			}
 		}else{
 			PRINTF("The number of sets is %u \n", level);
 			APP_FLAG_SET(FIFO_NOTIFY);
