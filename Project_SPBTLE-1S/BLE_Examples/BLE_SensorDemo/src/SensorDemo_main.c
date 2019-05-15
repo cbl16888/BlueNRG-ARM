@@ -331,7 +331,6 @@ int main(void)
   LSM6DS3_FIFO_init();
 
   uint8_t fifo_status;
-
   while(1)
   {
 
@@ -350,7 +349,6 @@ int main(void)
 				APP_FLAG_SET(EMPTY_FIFO);
 			}
 		}
-
 #if ST_OTA_FIRMWARE_UPGRADE_SUPPORT
     /* Check if the OTA firmware upgrade session has been completed */
     if (OTA_Tick() == 1)
@@ -481,6 +479,8 @@ void LSM6DS3_FIFO_init(void){
     * Set PEDO FIFO storing mode
     */
    lsm6ds3_fifo_write_trigger_set(&dev_ctx, LSM6DS3_TRG_XL_GY_DRDY);
+	 
+
 
    /*
     * Set ODR FIFO
@@ -491,7 +491,7 @@ void LSM6DS3_FIFO_init(void){
     * Set Output Data Rate for acc/gyro to 52 Hz
     */
    lsm6ds3_xl_data_rate_set(&dev_ctx, LSM6DS3_XL_ODR_52Hz);
-   lsm6ds3_gy_data_rate_set(&dev_ctx, LSM6DS3_XL_ODR_52Hz);
+   lsm6ds3_gy_data_rate_set(&dev_ctx, LSM6DS3_GY_ODR_52Hz);
 
    /*
     * Enable drdy 75 us pulse: uncomment if interrupt must be pulsed
@@ -505,6 +505,10 @@ void LSM6DS3_FIFO_init(void){
    int_1_reg.int1_fth = PROPERTY_ENABLE;
    int_1_reg.drdy_on_int1 = PROPERTY_DISABLE;
    lsm6ds3_pin_int1_route_set(&dev_ctx, &int_1_reg);
+	 
+	 /* Remove acc HP/LP filter  0x60*/
+	 uint8_t temp=0x00; 
+	 lsm6ds3_write_reg(&dev_ctx, LSM6DS3_CTRL8_XL, &temp, 1 );
 }
 
 void GPIO_12_interrupt_init(void){
