@@ -418,9 +418,10 @@ void LSM6DS3_FIFO_init(void){
    /*
     * Set full scale
     */
-   lsm6ds3_xl_full_scale_set(&dev_ctx, LSM6DS3_2g);
-   lsm6ds3_gy_full_scale_set(&dev_ctx, LSM6DS3_250dps);
+   lsm6ds3_xl_full_scale_set(&dev_ctx, LSM6DS3_16g); 
+   lsm6ds3_gy_full_scale_set(&dev_ctx, LSM6DS3_2000dps);
 
+	
    /*
     * Enable Block Data Update
     */
