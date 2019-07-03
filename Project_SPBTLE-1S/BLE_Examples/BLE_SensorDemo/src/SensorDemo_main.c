@@ -507,7 +507,7 @@ void LSM6DS3_FIFO_init(void){
    int_1_reg.drdy_on_int1 = PROPERTY_DISABLE;
    lsm6ds3_pin_int1_route_set(&dev_ctx, &int_1_reg);
 	 
-	 /* Remove acc HP/LP filter  0x60*/
+	 /* Remove acc HP/LP filter */
 	 uint8_t temp=0x00; 
 	 lsm6ds3_write_reg(&dev_ctx, LSM6DS3_CTRL8_XL, &temp, 1 );
 }

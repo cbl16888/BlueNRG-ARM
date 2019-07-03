@@ -189,7 +189,7 @@ tBleStatus FIFO_Notify(void)
   HOST_TO_LE_16(buff+4,-FIFO_data[i].AXIS_Z);
 	HOST_TO_LE_16(buff+6,FIFO_data[i].AXIS_GY);
   HOST_TO_LE_16(buff+8,FIFO_data[i].AXIS_GX);
-  HOST_TO_LE_16(buff+10,FIFO_data[i].AXIS_GY);
+  HOST_TO_LE_16(buff+10,FIFO_data[i].AXIS_GZ);
 	HOST_TO_LE_32(buff+12,FIFO_data[i].TIMESTAMP);
 	HOST_TO_LE_16(buff+16, FIFO_data[i].PEDOMETER);
 	
