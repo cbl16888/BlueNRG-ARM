@@ -510,6 +510,12 @@ void LSM6DS3_FIFO_init(void){
 	 /* Remove acc HP/LP filter */
 	 uint8_t temp=0x00; 
 	 lsm6ds3_write_reg(&dev_ctx, LSM6DS3_CTRL8_XL, &temp, 1 );
+	 
+
+	 /* Set the device in low power mode*/
+	 lsm6ds3_xl_power_mode_set(&dev_ctx, LSM6DS3_XL_NORMAL);
+	 lsm6ds3_gy_power_mode_set(&dev_ctx, LSM6DS3_GY_NORMAL);
+	 
 }
 
 void GPIO_12_interrupt_init(void){
