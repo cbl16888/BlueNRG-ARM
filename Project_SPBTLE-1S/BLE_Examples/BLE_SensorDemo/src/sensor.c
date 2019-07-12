@@ -298,11 +298,11 @@ void Set_DeviceConnectable(void)
 	/* Power management */
 	if(APP_FLAG(CONNECTED)){
 		if(APP_FLAG(SET_HIGH_POWER)){
-			aci_hal_set_tx_power_level(7 ,1); 
-			aci_l2cap_connection_parameter_update_req(connection_handle, 6, 6, 0, 3200); 
+			aci_hal_set_tx_power_level(1, 7); 
+			aci_l2cap_connection_parameter_update_req(connection_handle, 10, 10, 0, 3200); 
 		}else if(APP_FLAG(SET_LOW_POWER)){
-			aci_hal_set_tx_power_level(4 ,1); 
-			aci_l2cap_connection_parameter_update_req(connection_handle, 50, 50, 0, 3200); 
+			aci_hal_set_tx_power_level(1, 5); 
+			aci_l2cap_connection_parameter_update_req(connection_handle, 60, 60, 0, 3200); 
 		}
 	}
 }
