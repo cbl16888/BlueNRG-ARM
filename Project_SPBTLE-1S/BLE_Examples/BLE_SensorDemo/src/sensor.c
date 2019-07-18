@@ -461,10 +461,9 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 		if(Attr_Data[0]==0x01){
 				APP_FLAG_SET(NOTIFICATIONS_ENABLED);
 				/*Empty LSM6DS3 FIFO */
-				while(fifo_status!=1){
-					LSM6DS3_IO_Read(&dummytempReg[0], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_FIFO_DATA_OUT_L, 2);
-					lsm6ds3_fifo_full_flag_get(&dev_ctx, &fifo_status);
-				}
+				lsm6ds3_fifo_mode_set(&dev_ctx, LSM6DS3_BYPASS_MODE);
+				Clock_Wait(1);
+				lsm6ds3_fifo_mode_set(&dev_ctx, LSM6DS3_STREAM_MODE);
 				/*Reset timestamp */
 				lsm6ds3_timestamp_rst_set(&dev_ctx);
 				SdkEvalLedOn(LED3);
