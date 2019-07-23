@@ -69,6 +69,7 @@ uint16_t envSensServHandle, tempCharHandle, pressCharHandle, humidityCharHandle;
 Service_UUID_t service_uuid;
 Char_UUID_t char_uuid;
 Char_Desc_Uuid_t char_desc_uuid;
+int i=0;
 extern uint8_t request_fifo_full_notify;
 extern uint8_t request_fifo_full_read;
 extern uint16_t connection_handle;
@@ -137,7 +138,7 @@ tBleStatus Add_Acc_Service(void)
 
   COPY_START_UUID(uuid);
   Osal_MemCpy(&char_uuid.Char_UUID_128, uuid, 16);
-  ret =  aci_gatt_add_char(accServHandle, UUID_TYPE_128, &char_uuid, 20, CHAR_PROP_WRITE|CHAR_PROP_WRITE_WITHOUT_RESP, ATTR_PERMISSION_NONE, GATT_NOTIFY_ATTRIBUTE_WRITE ,
+  ret =  aci_gatt_add_char(accServHandle, UUID_TYPE_128, &char_uuid, 1, CHAR_PROP_WRITE_WITHOUT_RESP, ATTR_PERMISSION_NONE, GATT_NOTIFY_ATTRIBUTE_WRITE ,
                            16, 0, &startCharHandle);
   if (ret != BLE_STATUS_SUCCESS) goto fail;
 
@@ -181,7 +182,6 @@ tBleStatus FIFO_Notify(void)
 {
   uint8_t buff[18]; //make room for 6*8 bits of data
   tBleStatus ret;
-  static int i=0;
   //PRINTF("Test %u \n", i);
 
 	HOST_TO_LE_16(buff,-FIFO_data[i].AXIS_Y);

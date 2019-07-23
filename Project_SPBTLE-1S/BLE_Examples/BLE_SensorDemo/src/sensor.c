@@ -83,11 +83,12 @@ uint8_t buffer[540];
 struct DataSet_t FIFO_data[30];
 #endif 
 
-uint8_t start_request=FALSE;
+uint8_t start_request= FALSE;
 volatile uint8_t request_free_fall_notify = FALSE; 
 extern uint8_t request_fifo_full_notify;
 extern uint8_t request_fifo_full_read;
-extern uint16_t accCharHandle;
+extern uint16_t accCharHandle, startCharHandle;
+extern int i;
 extern volatile int app_flags;
 uint16_t available_buffers;
 
@@ -457,7 +458,7 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 	  dev_ctx.read_reg = platform_read;
 		uint8_t fifo_status;
 		uint8_t dummytempReg[2]= {0, 0};
-	if(Attr_Handle == accCharHandle + 2){
+	if(Attr_Handle == accCharHandle + 2){ //For notifications
 		if(Attr_Data[0]==0x01){
 				APP_FLAG_SET(NOTIFICATIONS_ENABLED);
 				/*Empty LSM6DS3 FIFO */
@@ -466,7 +467,6 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 				lsm6ds3_fifo_mode_set(&dev_ctx, LSM6DS3_STREAM_MODE);
 				/*Reset timestamp */
 				lsm6ds3_timestamp_rst_set(&dev_ctx);
-				SdkEvalLedOn(LED3);
 				/*Connection update */
 				#if UPDATE_CONN_PARAM    
 					l2cap_request_sent = FALSE;
@@ -475,6 +475,21 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 						l2cap_req_timer_expired = FALSE;
 					}
 				#endif
+		}
+		
+	}
+	if(Attr_Handle == startCharHandle + 1){ //For sync request
+		if(Attr_Data[0]==0x01){
+			/*Clear FIFO level and stop notifications of old data*/
+			level=0;
+			i=0;
+			APP_FLAG_CLEAR(FIFO_NOTIFY);
+			/*Empty LSM6DS3 FIFO */
+			lsm6ds3_fifo_mode_set(&dev_ctx, LSM6DS3_BYPASS_MODE);
+			Clock_Wait(1);
+			lsm6ds3_fifo_mode_set(&dev_ctx, LSM6DS3_STREAM_MODE);
+			/*Reset timestamp */
+			lsm6ds3_timestamp_rst_set(&dev_ctx);
 		}
 	}
 

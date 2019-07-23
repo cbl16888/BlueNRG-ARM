@@ -341,7 +341,7 @@ int main(void)
     APP_Tick();
 		
 		if(APP_FLAG(CONNECTED) && APP_FLAG(L2CAP_PARAM_UPD_SENT) && !APP_FLAG(FIFO_NOTIFY) && APP_FLAG(NOTIFICATIONS_ENABLED)){
-			BlueNRG_Sleep(SLEEPMODE_NOTIMER, 0, 0);
+			//BlueNRG_Sleep(SLEEPMODE_NOTIMER, 0, 0);
 			/* Set the FIFO full flag when getting out of sleep mode */
 			lsm6ds3_fifo_full_flag_get(&dev_ctx, &fifo_status);
 			if(fifo_status==0)
