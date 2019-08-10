@@ -38,7 +38,7 @@ extern volatile int app_flags;
 #define CONN_PARAM_UPD_SENT     0x08
 #define L2CAP_PARAM_UPD_SENT    0x10
 #define TX_BUFFER_FULL          0x20
-#define EMPTY_FIFO		          0x40
+#define LSM6DS3_DATA_READY		  0x40
 #define FIFO_NOTIFY		          0x80
 /* Added flags for handling TX, RX characteristics discovery */
 #define START_READ_TX_CHAR_HANDLE 0x100 

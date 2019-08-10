@@ -63,6 +63,7 @@
 volatile uint8_t set_connectable = 1;
 uint16_t connection_handle = 0;
 uint8_t connInfo[20];
+uint8_t buffer[18];
 uint16_t level;
 BOOL sensor_board = FALSE; // It is True if sensor boad has been detected
 
@@ -79,8 +80,9 @@ IMU_6AXES_DrvTypeDef *Imu6AxesDrv = NULL;
 LSM6DS3_DrvExtTypeDef *Imu6AxesDrvExt = NULL;
 static AxesRaw_t acceleration_data; 
 static AxesRaw_t gyroscope_data;  //Add variable to support the gyroscope
-uint8_t buffer[540];
-struct DataSet_t FIFO_data[30];
+struct DataSet_t FIFO_data[250];
+struct DataSet_t * write_ptr = &FIFO_data[0];
+struct DataSet_t * send_ptr = &FIFO_data[0];
 #endif 
 
 uint8_t start_request= FALSE;
@@ -94,7 +96,7 @@ uint16_t available_buffers;
 
   
 /* Private function prototypes -----------------------------------------------*/
-void FIFO_Full_Read(void);
+void Data_Read(void);
 int32_t platform_write(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len);
 int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len);
 IMU_6AXES_StatusTypeDef    LSM6DS3_X_GetSensitivity( float *pfData );
@@ -290,11 +292,11 @@ void Set_DeviceConnectable(void)
     FIFO_Notify();
   }
 	
-  /*LSM6DS3 FIFO management*/
-  if(APP_FLAG(EMPTY_FIFO)){
-		FIFO_Full_Read();
-		APP_FLAG_CLEAR(EMPTY_FIFO);
-  }
+	if(APP_FLAG(LSM6DS3_DATA_READY)){
+		Data_Read();
+		APP_FLAG_CLEAR(LSM6DS3_DATA_READY);
+		APP_FLAG_SET(FIFO_NOTIFY);
+	}
 	
 	/* Power management */
 	if(APP_FLAG(CONNECTED)){
@@ -438,6 +440,12 @@ void HAL_VTimerTimeoutCallback(uint8_t timerNum)
     l2cap_req_timer_expired = TRUE;
   }
 #endif
+	if (timerNum == 0) {
+		/* Set Flag */
+		APP_FLAG_SET(LSM6DS3_DATA_READY);
+		/* Start a new timer */
+		HAL_VTimerStart_ms(0, 20); //Timer expires after 20ms (50Hz)
+	}
 }
 
 /*******************************************************************************
@@ -467,6 +475,8 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 				lsm6ds3_fifo_mode_set(&dev_ctx, LSM6DS3_STREAM_MODE);
 				/*Reset timestamp */
 				lsm6ds3_timestamp_rst_set(&dev_ctx);
+				/*Start Timer*/
+				HAL_VTimerStart_ms(0, 20); //Timer expires after 20ms (50Hz)
 				/*Connection update */
 				#if UPDATE_CONN_PARAM    
 					l2cap_request_sent = FALSE;
@@ -490,6 +500,9 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 			lsm6ds3_fifo_mode_set(&dev_ctx, LSM6DS3_STREAM_MODE);
 			/*Reset timestamp */
 			lsm6ds3_timestamp_rst_set(&dev_ctx);
+			/*Stop Timer and restart it*/
+			HAL_VTimer_Stop(0);
+			HAL_VTimerStart_ms(0, 20); //Timer expires after 20ms (50Hz)
 		}
 	}
 
@@ -511,71 +524,35 @@ void aci_hal_end_of_radio_activity_event(uint8_t Last_State,
 #endif 
 }
 /*******************************************************************************
- * Function Name  : FIFO_Full_Read.
+ * Function Name  : Data_Read.
  * Description    : This function will be called once the FIFO watermark level is
  *                 reached. This function reads all the data stored in the FIFO
  * Input          : None
  * Output         : Updated data structure
  * Return         : None
  *******************************************************************************/
-void FIFO_Full_Read(void){
-	  static lsm6ds3_ctx_t dev_ctx;
-	  static uint8_t tempReg[2]= {0, 0};
-		float sensitivity_acc = 0.0f;
-    float sensitivity_gyr = 0.0f;
-		uint8_t fifo_status;
-	  dev_ctx.write_reg = platform_write;
-	  dev_ctx.read_reg = platform_read;
-	  lsm6ds3_fifo_data_level_get(&dev_ctx, &level); //gives the number of words (1 word=2 bytes)
-		if(level!=0){
-			level/=9;	
-		}
-		if(level>400){
-			/*Empty FIFO to prevent errors*/
-			while(fifo_status!=1){
-				LSM6DS3_IO_Read(&tempReg[0], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_FIFO_DATA_OUT_L, 2);
-				lsm6ds3_fifo_full_flag_get(&dev_ctx, &fifo_status);
-			}
-			level=0;
-			PRINTF("8 seconds of data were lost due to poor BLE signal quality. FIFO was refreshed \n");
-		}else if(level>30){
-			PRINTF("The number of sets was %u ", level);
-			level=30;
-			PRINTF("but was reduced to %u \n", level);
-			APP_FLAG_SET(FIFO_NOTIFY);
-			if(APP_FLAG(LOW_POWER)){
-				APP_FLAG_SET(SET_HIGH_POWER);
-			}
-		}else if(level==0 || level==1){
-			//PRINTF("The number of sets is %u ", level);
-			//PRINTF("and there is no need to notify. Flag reset \n");
-			APP_FLAG_CLEAR(FIFO_NOTIFY);
-			APP_FLAG_CLEAR(EMPTY_FIFO);
-			if(APP_FLAG(HIGH_POWER)){
-				APP_FLAG_SET(SET_LOW_POWER);
-			}
-		}else{
-			PRINTF("The number of sets is %u \n", level);
-			APP_FLAG_SET(FIFO_NOTIFY);
-		}
-	  for(int i=0; i<((level-1)*9*2);i+=2){ //We have to leave one data set in the FIFO
-		  LSM6DS3_IO_Read(&tempReg[0], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_FIFO_DATA_OUT_L, 2);
-		  buffer[i]=tempReg[0];
-		  buffer[i+1]=tempReg[1];
-	  }
-		int j=0;
-		for(int i=0; i<(level-1); i++){
-				FIFO_data[i].AXIS_X=(int16_t)(((int16_t)buffer[j] | (int16_t)buffer[j+1]<<8));
-				FIFO_data[i].AXIS_Y=(int16_t)(((int16_t)buffer[j+2] | (int16_t)buffer[j+3]<<8));
-				FIFO_data[i].AXIS_Z=(int16_t)(((int16_t)buffer[j+4] | (int16_t)buffer[j+5]<<8));
-				FIFO_data[i].AXIS_GX=(int16_t)(((int16_t)buffer[j+6] | (int16_t)buffer[j+7]<<8));
-				FIFO_data[i].AXIS_GY=(int16_t)(((int16_t)buffer[j+8] | (int16_t)buffer[j+9]<<8));
-				FIFO_data[i].AXIS_GZ=(int16_t)(((int16_t)buffer[j+10] | (int16_t)buffer[j+11]<<8));
-				FIFO_data[i].TIMESTAMP=(((uint32_t)buffer[j+12])<<8) | (((uint32_t)buffer[j+13])<<16) | ((uint32_t)buffer[j+15]);
-				FIFO_data[i].PEDOMETER=(uint16_t)buffer[j+16] | (uint16_t)buffer[j+17]<<8;
-				//PRINTF("AXIS_X %li AXIS_Y %li AXIS_Z %li AXIS_GX %li AXIS_GY %li AXIS_GZ %li TIMESTAMP %lu PEDOMETER %u TROUBLESHOOTING BYTE 12 %u, BYTE 13 %u, BYTE 14 %u BYTE 15 %u \n",FIFO_data[i].AXIS_X, FIFO_data[i].AXIS_Y, FIFO_data[i].AXIS_Z, FIFO_data[i].AXIS_GX, FIFO_data[i].AXIS_GY, FIFO_data[i].AXIS_GY, FIFO_data[i].TIMESTAMP, FIFO_data[i].PEDOMETER, buffer[j+12], buffer[j+13], buffer[j+14], buffer[j+15]);
-				j+=18;
-		}
+void Data_Read(void){
+	static lsm6ds3_ctx_t dev_ctx;
+	dev_ctx.write_reg = platform_write;
+	dev_ctx.read_reg = platform_read;
+	uint8_t nombredeSample[1];
+	nombredeSample[0] = 18;
+	/* Retrieve the most recent sample from the FIFO */
+	while(nombredeSample[0] > 9){
+		LSM6DS3_IO_Read(&nombredeSample[0], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_FIFO_STATUS1, 1);
+		LSM6DS3_IO_Read(&buffer[0], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_FIFO_DATA_OUT_L, 18);
+	}
+	write_ptr->AXIS_X=(int16_t)(((int16_t)buffer[0] | (int16_t)buffer[1]<<8));
+	write_ptr->AXIS_Y=(int16_t)(((int16_t)buffer[2] | (int16_t)buffer[3]<<8));
+	write_ptr->AXIS_Z=(int16_t)(((int16_t)buffer[4] | (int16_t)buffer[5]<<8));
+	write_ptr->AXIS_GX=(int16_t)(((int16_t)buffer[6] | (int16_t)buffer[7]<<8));
+	write_ptr->AXIS_GY=(int16_t)(((int16_t)buffer[8] | (int16_t)buffer[9]<<8));
+	write_ptr->AXIS_GZ=(int16_t)(((int16_t)buffer[10] | (int16_t)buffer[11]<<8));
+	write_ptr->TIMESTAMP=(((uint32_t)buffer[12])<<8) | (((uint32_t)buffer[13])<<16) | ((uint32_t)buffer[15]);
+	write_ptr->PEDOMETER=(uint16_t)buffer[16] | (uint16_t)buffer[17]<<8;
+	write_ptr++;
+	if(write_ptr==&FIFO_data[250])
+		write_ptr=&FIFO_data[0];
 }
 
 

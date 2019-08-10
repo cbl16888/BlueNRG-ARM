@@ -229,7 +229,7 @@ NOTEs:
 #include "lsm6ds3.h"
 #include "lsm6ds3_hal.h"
 #include "app_state.h"
-
+#include "BlueNRG1_mft.h"
 
 
 /* Private typedef -----------------------------------------------------------*/
@@ -273,6 +273,7 @@ int32_t platform_write(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len);
 int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len);
 void LSM6DS3_FIFO_init(void);
 void GPIO_12_interrupt_init(void);
+void InitializeTimer(void);
 /* Private functions ---------------------------------------------------------*/
 
 
@@ -324,12 +325,9 @@ int main(void)
   SdkEvalPushButtonInit(BUTTON_1);
   SdkEvalPushButtonIrq(BUTTON_1,IRQ_ON_FALLING_EDGE);
 
-  /*Enable GPIO_12 as interrupt */
-  GPIO_12_interrupt_init();
-
   /*LSM6DS3 FIFO init*/
   LSM6DS3_FIFO_init();
-
+	
   uint8_t fifo_status;
   while(1)
   {
@@ -341,14 +339,9 @@ int main(void)
     APP_Tick();
 		
 		if(APP_FLAG(CONNECTED) && APP_FLAG(L2CAP_PARAM_UPD_SENT) && !APP_FLAG(FIFO_NOTIFY) && APP_FLAG(NOTIFICATIONS_ENABLED)){
-			//BlueNRG_Sleep(SLEEPMODE_NOTIMER, 0, 0);
-			/* Set the FIFO full flag when getting out of sleep mode */
-			lsm6ds3_fifo_full_flag_get(&dev_ctx, &fifo_status);
-			if(fifo_status==0)
-			{
-				APP_FLAG_SET(EMPTY_FIFO);
-			}
+			//BlueNRG_Sleep(SLEEPMODE_WAKETIMER, 0, 0);
 		}
+		
 #if ST_OTA_FIRMWARE_UPGRADE_SUPPORT
     /* Check if the OTA firmware upgrade session has been completed */
     if (OTA_Tick() == 1)
@@ -416,8 +409,8 @@ void LSM6DS3_FIFO_init(void){
    } while (rst);
 
 	 	/* Set the device in low power mode*/
-	 lsm6ds3_xl_power_mode_set(&dev_ctx, LSM6DS3_XL_NORMAL);
-	 lsm6ds3_gy_power_mode_set(&dev_ctx, LSM6DS3_GY_NORMAL);
+	 //lsm6ds3_xl_power_mode_set(&dev_ctx, LSM6DS3_XL_NORMAL);
+	 //lsm6ds3_gy_power_mode_set(&dev_ctx, LSM6DS3_GY_NORMAL);
 	 
    /*
     * Set full scale
@@ -490,13 +483,13 @@ void LSM6DS3_FIFO_init(void){
    /*
     * Set ODR FIFO
     */
-   lsm6ds3_fifo_data_rate_set(&dev_ctx, LSM6DS3_FIFO_52Hz);
+   lsm6ds3_fifo_data_rate_set(&dev_ctx, LSM6DS3_FIFO_104Hz);
 
    /*
     * Set Output Data Rate for acc/gyro to 52 Hz
     */
-   lsm6ds3_xl_data_rate_set(&dev_ctx, LSM6DS3_XL_ODR_52Hz);
-   lsm6ds3_gy_data_rate_set(&dev_ctx, LSM6DS3_GY_ODR_52Hz);
+   lsm6ds3_xl_data_rate_set(&dev_ctx, LSM6DS3_XL_ODR_104Hz);
+   lsm6ds3_gy_data_rate_set(&dev_ctx, LSM6DS3_GY_ODR_104Hz);
 
    /*
     * Enable drdy 75 us pulse: uncomment if interrupt must be pulsed
@@ -551,3 +544,20 @@ void GPIO_12_interrupt_init(void){
 	  GPIO_EXTICmd(GPIO_Pin_12, ENABLE);
 }
 
+void InitializeTimer(void){
+	MFT_InitType timer_init;
+	
+	SysCtrl_PeripheralClockCmd(CLOCK_PERIPH_MTFX1, ENABLE);
+	MFT_StructInit(&timer_init);
+	
+	timer_init.MFT_Mode = MFT_MODE_3;
+	/* Prescaler */
+	timer_init.MFT_Prescaler = 32-1; //MFT base clock is 16Mhz -> (16MHz/500kHz - 1 = 31)
+	timer_init.MFT_CRA=10000; //20ms -> 50Hz
+	 /* MFT1 configuration */
+	timer_init.MFT_Clock1 = MFT_PRESCALED_CLK;
+	MFT_Init(MFT1, &timer_init);
+	MFT_SetCounter1(MFT1, 10000); 
+	/* Enable interrupts */
+	MFT_EnableIT(MFT1, MFT_IT_TNA, ENABLE);
+}

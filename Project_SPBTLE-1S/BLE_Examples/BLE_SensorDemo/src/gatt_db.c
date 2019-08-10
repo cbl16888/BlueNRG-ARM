@@ -75,10 +75,12 @@ extern uint8_t request_fifo_full_read;
 extern uint16_t connection_handle;
 extern BOOL sensor_board;
 extern uint16_t level;
+extern struct DataSet_t * send_ptr;
+extern struct DataSet_t * write_ptr;
 #ifndef SENSOR_EMULATION
 extern IMU_6AXES_DrvTypeDef *Imu6AxesDrv;
 extern LSM6DS3_DrvExtTypeDef *Imu6AxesDrvExt;
-extern struct DataSet_t FIFO_data[30];
+extern struct DataSet_t FIFO_data[250];
 #endif
 
 IMU_6AXES_StatusTypeDef GetAccAxesRaw(AxesRaw_t * acceleration_data, AxesRaw_t * gyroscope_data)
@@ -184,30 +186,28 @@ tBleStatus FIFO_Notify(void)
   tBleStatus ret;
   //PRINTF("Test %u \n", i);
 
-	HOST_TO_LE_16(buff,-FIFO_data[i].AXIS_Y);
-  HOST_TO_LE_16(buff+2,FIFO_data[i].AXIS_X);
-  HOST_TO_LE_16(buff+4,-FIFO_data[i].AXIS_Z);
-	HOST_TO_LE_16(buff+6,FIFO_data[i].AXIS_GY);
-  HOST_TO_LE_16(buff+8,FIFO_data[i].AXIS_GX);
-  HOST_TO_LE_16(buff+10,FIFO_data[i].AXIS_GZ);
-	HOST_TO_LE_32(buff+12,FIFO_data[i].TIMESTAMP);
-	HOST_TO_LE_16(buff+16, FIFO_data[i].PEDOMETER);
+	HOST_TO_LE_16(buff,-send_ptr->AXIS_Y);
+  HOST_TO_LE_16(buff+2,send_ptr->AXIS_X);
+  HOST_TO_LE_16(buff+4,-send_ptr->AXIS_Z);
+	HOST_TO_LE_16(buff+6,send_ptr->AXIS_GY);
+  HOST_TO_LE_16(buff+8,send_ptr->AXIS_GX);
+  HOST_TO_LE_16(buff+10,send_ptr->AXIS_GZ);
+	HOST_TO_LE_32(buff+12,send_ptr->TIMESTAMP);
+	HOST_TO_LE_16(buff+16, send_ptr->PEDOMETER);
 	
 
   ret = aci_gatt_update_char_value_ext(connection_handle, accServHandle, accCharHandle, 1, 18, 0, 18, buff);
   if (ret == BLE_STATUS_SUCCESS){
-	  i++;
-	  if(i==(level-1)){ 
-		  i=0;
-		  APP_FLAG_CLEAR(FIFO_NOTIFY);
-	  }
+		send_ptr++;
+		if(send_ptr==&FIFO_data[250])
+			send_ptr=&FIFO_data[0];
+		if(send_ptr==write_ptr)
+			APP_FLAG_CLEAR(FIFO_NOTIFY);
   }else if(ret == BLE_STATUS_INSUFFICIENT_RESOURCES){
 	  APP_FLAG_SET(TX_BUFFER_FULL);
 	  return BLE_STATUS_SUCCESS;
   }
-
   return BLE_STATUS_SUCCESS;
-
 }
 
 /*******************************************************************************
