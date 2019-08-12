@@ -205,8 +205,15 @@ tBleStatus FIFO_Notify(void)
 			APP_FLAG_CLEAR(FIFO_NOTIFY);
   }else if(ret == BLE_STATUS_INSUFFICIENT_RESOURCES){
 	  APP_FLAG_SET(TX_BUFFER_FULL);
-	  return BLE_STATUS_SUCCESS;
   }
+	/*Power management*/
+	if((write_ptr - send_ptr > 20) && APP_FLAG(LOW_POWER))
+		APP_FLAG_SET(SET_HIGH_POWER);
+	else if ((write_ptr - send_ptr < 20) && (write_ptr - send_ptr>0) &&  APP_FLAG(HIGH_POWER))
+		APP_FLAG_SET(SET_LOW_POWER);
+
+	int dummy = write_ptr-send_ptr;
+	PRINTF("%i \n", write_ptr-send_ptr);
   return BLE_STATUS_SUCCESS;
 }
 

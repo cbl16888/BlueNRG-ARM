@@ -339,7 +339,7 @@ int main(void)
     APP_Tick();
 		
 		if(APP_FLAG(CONNECTED) && APP_FLAG(L2CAP_PARAM_UPD_SENT) && !APP_FLAG(FIFO_NOTIFY) && APP_FLAG(NOTIFICATIONS_ENABLED)){
-			//BlueNRG_Sleep(SLEEPMODE_WAKETIMER, 0, 0);
+			BlueNRG_Sleep(SLEEPMODE_WAKETIMER, 0, 0);
 		}
 		
 #if ST_OTA_FIRMWARE_UPGRADE_SUPPORT
@@ -483,13 +483,13 @@ void LSM6DS3_FIFO_init(void){
    /*
     * Set ODR FIFO
     */
-   lsm6ds3_fifo_data_rate_set(&dev_ctx, LSM6DS3_FIFO_104Hz);
+   lsm6ds3_fifo_data_rate_set(&dev_ctx, LSM6DS3_FIFO_833Hz);
 
    /*
     * Set Output Data Rate for acc/gyro to 52 Hz
     */
-   lsm6ds3_xl_data_rate_set(&dev_ctx, LSM6DS3_XL_ODR_104Hz);
-   lsm6ds3_gy_data_rate_set(&dev_ctx, LSM6DS3_GY_ODR_104Hz);
+   lsm6ds3_xl_data_rate_set(&dev_ctx, LSM6DS3_XL_ODR_833Hz);
+   lsm6ds3_gy_data_rate_set(&dev_ctx, LSM6DS3_GY_ODR_833Hz);
 
    /*
     * Enable drdy 75 us pulse: uncomment if interrupt must be pulsed

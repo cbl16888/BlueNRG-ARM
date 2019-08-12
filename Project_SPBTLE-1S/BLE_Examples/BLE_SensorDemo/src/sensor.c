@@ -355,11 +355,13 @@ void aci_l2cap_connection_update_resp_event(uint16_t Connection_Handle,
 			APP_FLAG_CLEAR(SET_HIGH_POWER);
 			APP_FLAG_CLEAR(LOW_POWER);
 			APP_FLAG_SET(HIGH_POWER);
+			PRINTF("High Power mode activated \n");
 		}
 		if(APP_FLAG(SET_LOW_POWER)){
 			APP_FLAG_CLEAR(SET_LOW_POWER);
 			APP_FLAG_CLEAR(HIGH_POWER);
 			APP_FLAG_SET(LOW_POWER);
+			PRINTF("Low Power mode activated \n");
 		}
 	}else{
 		PRINTF("Connection update refused \n");
@@ -386,7 +388,11 @@ void hci_disconnection_complete_event(uint8_t Status,
   APP_FLAG_SET(SET_CONNECTABLE);
   APP_FLAG_CLEAR(NOTIFICATIONS_ENABLED);
   APP_FLAG_CLEAR(TX_BUFFER_FULL);
-
+	/* Restart pointers*/
+	write_ptr = send_ptr = &FIFO_data[0];
+	/*Stop the current timer*/
+	HAL_VTimer_Stop(0);
+	
   APP_FLAG_CLEAR(START_READ_TX_CHAR_HANDLE);
   APP_FLAG_CLEAR(END_READ_TX_CHAR_HANDLE);
   APP_FLAG_CLEAR(START_READ_RX_CHAR_HANDLE); 

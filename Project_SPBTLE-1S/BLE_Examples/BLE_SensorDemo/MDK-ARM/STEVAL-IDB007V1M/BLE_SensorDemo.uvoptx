@@ -157,18 +157,18 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>539</LineNumber>
+          <LineNumber>215</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>268705466</Address>
+          <Address>268707928</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../../src/sensor.c</Filename>
+          <Filename>../../src/gatt_db.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\BLE_SensorDemo\../../src/sensor.c\539</Expression>
+          <Expression>\\BLE_SensorDemo\../../src/gatt_db.c\215</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -236,6 +236,21 @@
           <count>12</count>
           <WinNumber>1</WinNumber>
           <ItemText>nombredeSample,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>13</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>send_ptr</ItemText>
+        </Ww>
+        <Ww>
+          <count>14</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>write_ptr</ItemText>
+        </Ww>
+        <Ww>
+          <count>15</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>dummy</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
