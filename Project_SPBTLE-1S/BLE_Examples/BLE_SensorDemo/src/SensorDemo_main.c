@@ -407,18 +407,13 @@ void LSM6DS3_FIFO_init(void){
    do {
  	  lsm6ds3_reset_get(&dev_ctx, &rst);
    } while (rst);
-
-	 	/* Set the device in low power mode*/
-	 //lsm6ds3_xl_power_mode_set(&dev_ctx, LSM6DS3_XL_NORMAL);
-	 //lsm6ds3_gy_power_mode_set(&dev_ctx, LSM6DS3_GY_NORMAL);
 	 
    /*
     * Set full scale
     */
    lsm6ds3_xl_full_scale_set(&dev_ctx, LSM6DS3_16g); 
-   lsm6ds3_gy_full_scale_set(&dev_ctx, LSM6DS3_2000dps);
+	 lsm6ds3_gy_full_scale_set(&dev_ctx, LSM6DS3_2000dps);
 
-	
    /*
     * Enable Block Data Update
     */
@@ -430,7 +425,7 @@ void LSM6DS3_FIFO_init(void){
    lsm6ds3_pedo_sens_set(&dev_ctx, PROPERTY_ENABLE);
 
    /*
-    * Set High Resolution Timestamp (25 us tick) !!Don't forget to reset it every once in a while!!
+    * Set High Resolution Timestamp (6ms4)
     */
    lsm6ds3_timestamp_res_set(&dev_ctx, LSM6DS3_LSB_6ms4);
 
@@ -445,48 +440,7 @@ void LSM6DS3_FIFO_init(void){
    lsm6ds3_timestamp_rst_set(&dev_ctx);
 
    /*
-    * Set FIFO watermark to a multiple of a pattern
-    * in this example we set watermark to 32 pattern
-    * which means 32 sequence of:
-    * (XL) = 6 bytes (3 word)
-    */
-   pattern_len = 3;
-   pattern_numbers = 30;
-   number_of_patterns = 3;
-   lsm6ds3_fifo_watermark_set(&dev_ctx, pattern_numbers * pattern_len * number_of_patterns);
-
-   /*
-    * Set FIFO mode to Stream to FIFO
-    */
-   lsm6ds3_fifo_mode_set(&dev_ctx, LSM6DS3_STREAM_MODE);
-
-   /*
-    * Set FIFO sensor decimators
-    */
-   lsm6ds3_fifo_xl_batch_set(&dev_ctx, LSM6DS3_FIFO_XL_NO_DEC);
-   lsm6ds3_fifo_gy_batch_set(&dev_ctx, LSM6DS3_FIFO_GY_NO_DEC);
-   lsm6ds3_fifo_dataset_4_batch_set(&dev_ctx, LSM6DS3_FIFO_DS4_NO_DEC);
-
-   /*
-    * Enable PEDO/TIMESTAMP as 4th data set
-    */
-
-   lsm6ds3_fifo_pedo_batch_set(&dev_ctx, PROPERTY_ENABLE);
-
-   /*
-    * Set PEDO FIFO storing mode
-    */
-   lsm6ds3_fifo_write_trigger_set(&dev_ctx, LSM6DS3_TRG_XL_GY_DRDY);
-	 
-
-
-   /*
-    * Set ODR FIFO
-    */
-   lsm6ds3_fifo_data_rate_set(&dev_ctx, LSM6DS3_FIFO_833Hz);
-
-   /*
-    * Set Output Data Rate for acc/gyro to 52 Hz
+    * Set Output Data Rate for acc/gyro to 833 Hz
     */
    lsm6ds3_xl_data_rate_set(&dev_ctx, LSM6DS3_XL_ODR_833Hz);
    lsm6ds3_gy_data_rate_set(&dev_ctx, LSM6DS3_GY_ODR_833Hz);

@@ -543,20 +543,28 @@ void Data_Read(void){
 	dev_ctx.read_reg = platform_read;
 	uint8_t nombredeSample[1];
 	nombredeSample[0] = 18;
-	/* Retrieve the most recent sample from the FIFO */
-	while(nombredeSample[0] > 9){
-		LSM6DS3_IO_Read(&nombredeSample[0], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_FIFO_STATUS1, 1);
-		LSM6DS3_IO_Read(&buffer[0], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_FIFO_DATA_OUT_L, 18);
-	}
+	/* Retrieve the most recent samples */
+	LSM6DS3_IO_Read(&buffer[0], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_OUT_X_L_XL, 6);
+	LSM6DS3_IO_Read(&buffer[6], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_OUT_X_L_G, 6);
+	LSM6DS3_IO_Read(&buffer[12], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_TIMESTAMP0_REG, 3);
+	LSM6DS3_IO_Read(&buffer[15], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_STEP_COUNTER_L, 2);
+
+	/* ACM data */
 	write_ptr->AXIS_X=(int16_t)(((int16_t)buffer[0] | (int16_t)buffer[1]<<8));
 	write_ptr->AXIS_Y=(int16_t)(((int16_t)buffer[2] | (int16_t)buffer[3]<<8));
 	write_ptr->AXIS_Z=(int16_t)(((int16_t)buffer[4] | (int16_t)buffer[5]<<8));
+	
+	/* Gyro data */
 	write_ptr->AXIS_GX=(int16_t)(((int16_t)buffer[6] | (int16_t)buffer[7]<<8));
 	write_ptr->AXIS_GY=(int16_t)(((int16_t)buffer[8] | (int16_t)buffer[9]<<8));
 	write_ptr->AXIS_GZ=(int16_t)(((int16_t)buffer[10] | (int16_t)buffer[11]<<8));
-	write_ptr->TIMESTAMP=(((uint32_t)buffer[12])<<8) | (((uint32_t)buffer[13])<<16) | ((uint32_t)buffer[15]);
-	write_ptr->PEDOMETER=(uint16_t)buffer[16] | (uint16_t)buffer[17]<<8;
+	
+	/* Timestamp and pedometer */
+	write_ptr->TIMESTAMP=(((uint32_t)buffer[14])<<16) | (((uint32_t)buffer[13])<<8) | ((uint32_t)buffer[12]);
+	write_ptr->PEDOMETER=(uint16_t)buffer[15] | (uint16_t)buffer[16]<<8;
+	
 	write_ptr++;
+	
 	if(write_ptr==&FIFO_data[250])
 		write_ptr=&FIFO_data[0];
 }
