@@ -281,14 +281,14 @@ void Set_DeviceConnectable(void)
 #if UPDATE_CONN_PARAM      
   /* Connection parameter update request */
   if(APP_FLAG(CONNECTED) && !APP_FLAG(L2CAP_PARAM_UPD_SENT) && l2cap_req_timer_expired){
-    aci_l2cap_connection_parameter_update_req(connection_handle, 50, 50, 0, 3200);
+    aci_l2cap_connection_parameter_update_req(connection_handle, 6, 10, 0, 3200);
     aci_gatt_exchange_config(connection_handle);
     APP_FLAG_SET(L2CAP_PARAM_UPD_SENT);
 		APP_FLAG_SET(LOW_POWER);
   }
 #endif
 
-  if(APP_FLAG(CONNECTED) && !APP_FLAG(TX_BUFFER_FULL) && APP_FLAG(FIFO_NOTIFY)) {
+  if(APP_FLAG(CONNECTED) && !APP_FLAG(TX_BUFFER_FULL) && APP_FLAG(FIFO_NOTIFY) && !APP_FLAG(LSM6DS3_DATA_READY)) {
     FIFO_Notify();
   }
 	
@@ -299,13 +299,15 @@ void Set_DeviceConnectable(void)
 	}
 	
 	/* Power management */
-	if(APP_FLAG(CONNECTED)){
+	if(APP_FLAG(CONNECTED) && !APP_FLAG(LSM6DS3_DATA_READY)){
 		if(APP_FLAG(SET_HIGH_POWER)){
 			aci_hal_set_tx_power_level(1, 7); 
-			aci_l2cap_connection_parameter_update_req(connection_handle, 10, 10, 0, 3200); 
+			aci_l2cap_connection_parameter_update_req(connection_handle, 6, 10, 0, 3200); 
+			aci_gatt_exchange_config(connection_handle);
 		}else if(APP_FLAG(SET_LOW_POWER)){
 			aci_hal_set_tx_power_level(1, 5); 
-			aci_l2cap_connection_parameter_update_req(connection_handle, 60, 60, 0, 3200); 
+			aci_l2cap_connection_parameter_update_req(connection_handle, 40, 60, 0, 3200); 
+			aci_gatt_exchange_config(connection_handle);
 		}
 	}
 }
@@ -475,14 +477,16 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 	if(Attr_Handle == accCharHandle + 2){ //For notifications
 		if(Attr_Data[0]==0x01){
 				APP_FLAG_SET(NOTIFICATIONS_ENABLED);
+				/*Start Timer*/
+				HAL_VTimerStart_ms(0, 20); //Timer expires after 20ms (50Hz)
 				/*Empty LSM6DS3 FIFO */
 				lsm6ds3_fifo_mode_set(&dev_ctx, LSM6DS3_BYPASS_MODE);
 				Clock_Wait(1);
 				lsm6ds3_fifo_mode_set(&dev_ctx, LSM6DS3_STREAM_MODE);
 				/*Reset timestamp */
 				lsm6ds3_timestamp_rst_set(&dev_ctx);
-				/*Start Timer*/
-				HAL_VTimerStart_ms(0, 20); //Timer expires after 20ms (50Hz)
+				/*Set flag for first sample*/
+				APP_FLAG_SET(LSM6DS3_DATA_READY);
 				/*Connection update */
 				#if UPDATE_CONN_PARAM    
 					l2cap_request_sent = FALSE;
@@ -496,6 +500,9 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 	}
 	if(Attr_Handle == startCharHandle + 1){ //For sync request
 		if(Attr_Data[0]==0x01){
+			/*Stop Timer and restart it*/
+			HAL_VTimer_Stop(0);
+			HAL_VTimerStart_ms(0, 20); //Timer expires after 20ms (50Hz)
 			/*Clear FIFO level and stop notifications of old data*/
 			level=0;
 			i=0;
@@ -506,9 +513,8 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 			lsm6ds3_fifo_mode_set(&dev_ctx, LSM6DS3_STREAM_MODE);
 			/*Reset timestamp */
 			lsm6ds3_timestamp_rst_set(&dev_ctx);
-			/*Stop Timer and restart it*/
-			HAL_VTimer_Stop(0);
-			HAL_VTimerStart_ms(0, 20); //Timer expires after 20ms (50Hz)
+			/*Set flag for first sample*/
+			APP_FLAG_SET(LSM6DS3_DATA_READY);
 		}
 	}
 
