@@ -101,6 +101,7 @@ int32_t platform_write(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len);
 int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len);
 IMU_6AXES_StatusTypeDef    LSM6DS3_X_GetSensitivity( float *pfData );
 IMU_6AXES_StatusTypeDef    LSM6DS3_G_GetSensitivity( float *pfData );
+extern void MicroSecondDelay(uint32_t delay);
 /* Private functions ---------------------------------------------------------*/
 
 #ifndef SENSOR_EMULATION
@@ -288,18 +289,12 @@ void Set_DeviceConnectable(void)
   }
 #endif
 
-  if(APP_FLAG(CONNECTED) && !APP_FLAG(TX_BUFFER_FULL) && APP_FLAG(FIFO_NOTIFY) && !APP_FLAG(LSM6DS3_DATA_READY)) {
+  if(APP_FLAG(CONNECTED) && !APP_FLAG(TX_BUFFER_FULL) && APP_FLAG(FIFO_NOTIFY)) {
     FIFO_Notify();
   }
 	
-	if(APP_FLAG(LSM6DS3_DATA_READY)){
-		Data_Read();
-		APP_FLAG_CLEAR(LSM6DS3_DATA_READY);
-		APP_FLAG_SET(FIFO_NOTIFY);
-	}
-	
 	/* Power management */
-	if(APP_FLAG(CONNECTED) && !APP_FLAG(LSM6DS3_DATA_READY)){
+	if(APP_FLAG(CONNECTED)){
 		if(APP_FLAG(SET_HIGH_POWER)){
 			aci_hal_set_tx_power_level(1, 7); 
 			aci_l2cap_connection_parameter_update_req(connection_handle, 6, 10, 0, 3200); 
@@ -449,10 +444,12 @@ void HAL_VTimerTimeoutCallback(uint8_t timerNum)
   }
 #endif
 	if (timerNum == 0) {
-		/* Set Flag */
-		APP_FLAG_SET(LSM6DS3_DATA_READY);
+		/* Wait ~800 us to get 20ms */
+		MicroSecondDelay(850);
 		/* Start a new timer */
-		HAL_VTimerStart_ms(0, 20); //Timer expires after 20ms (50Hz)
+		HAL_VTimerStart_ms(0, 19); //Timer expires after 19ms (50Hz)
+		/* Retrieve data */
+		Data_Read();
 	}
 }
 
@@ -485,8 +482,8 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 				lsm6ds3_fifo_mode_set(&dev_ctx, LSM6DS3_STREAM_MODE);
 				/*Reset timestamp */
 				lsm6ds3_timestamp_rst_set(&dev_ctx);
-				/*Set flag for first sample*/
-				APP_FLAG_SET(LSM6DS3_DATA_READY);
+				/* Retrieve data */
+				Data_Read();
 				/*Connection update */
 				#if UPDATE_CONN_PARAM    
 					l2cap_request_sent = FALSE;
@@ -513,8 +510,8 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 			lsm6ds3_fifo_mode_set(&dev_ctx, LSM6DS3_STREAM_MODE);
 			/*Reset timestamp */
 			lsm6ds3_timestamp_rst_set(&dev_ctx);
-			/*Set flag for first sample*/
-			APP_FLAG_SET(LSM6DS3_DATA_READY);
+			/* Retrieve data */
+			Data_Read();
 		}
 	}
 
@@ -573,8 +570,10 @@ void Data_Read(void){
 	
 	if(write_ptr==&FIFO_data[250])
 		write_ptr=&FIFO_data[0];
+	
+	/* Set flag to notify */
+	APP_FLAG_SET(FIFO_NOTIFY);
 }
-
 
 
 

@@ -666,6 +666,11 @@
               <FileType>1</FileType>
               <FilePath>../../src/SensorDemo_main.c</FilePath>
             </File>
+            <File>
+              <FileName>MicroSecondDelay.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\MicroSecondDelay.s</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -1260,6 +1265,11 @@
               <FileName>SensorDemo_main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../../src/SensorDemo_main.c</FilePath>
+            </File>
+            <File>
+              <FileName>MicroSecondDelay.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\MicroSecondDelay.s</FilePath>
             </File>
           </Files>
         </Group>
@@ -1856,6 +1866,11 @@
               <FileType>1</FileType>
               <FilePath>../../src/SensorDemo_main.c</FilePath>
             </File>
+            <File>
+              <FileName>MicroSecondDelay.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\MicroSecondDelay.s</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -2450,6 +2465,11 @@
               <FileName>SensorDemo_main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../../src/SensorDemo_main.c</FilePath>
+            </File>
+            <File>
+              <FileName>MicroSecondDelay.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\MicroSecondDelay.s</FilePath>
             </File>
           </Files>
         </Group>
