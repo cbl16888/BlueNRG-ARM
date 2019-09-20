@@ -445,7 +445,7 @@ void HAL_VTimerTimeoutCallback(uint8_t timerNum)
 #endif
 	if (timerNum == 0) {
 		/* Wait ~800 us to get 20ms */
-		MicroSecondDelay(850);
+		MicroSecondDelay(750);
 		/* Start a new timer */
 		HAL_VTimerStart_ms(0, 19); //Timer expires after 19ms (50Hz)
 		/* Retrieve data */
