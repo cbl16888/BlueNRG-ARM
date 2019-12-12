@@ -74,6 +74,7 @@ extern uint8_t request_fifo_full_notify;
 extern uint8_t request_fifo_full_read;
 extern uint16_t connection_handle;
 extern BOOL sensor_board;
+volatile int debug = 0;
 extern uint16_t level;
 extern struct DataSet_t * send_ptr;
 extern struct DataSet_t * write_ptr;
@@ -184,6 +185,7 @@ tBleStatus FIFO_Notify(void)
 {
   uint8_t buff[18]; //make room for 6*8 bits of data
   tBleStatus ret;
+	;
   //PRINTF("Test %u \n", i);
 
 	HOST_TO_LE_16(buff,-send_ptr->AXIS_Y);
@@ -193,7 +195,12 @@ tBleStatus FIFO_Notify(void)
   HOST_TO_LE_16(buff+8,send_ptr->AXIS_GX);
   HOST_TO_LE_16(buff+10,send_ptr->AXIS_GZ);
 	HOST_TO_LE_32(buff+12,send_ptr->TIMESTAMP);
-	HOST_TO_LE_16(buff+16, send_ptr->PEDOMETER);
+	debug = (write_ptr - send_ptr);
+	if((write_ptr - send_ptr) < 250 && (write_ptr - send_ptr) > 0){
+		HOST_TO_LE_16(buff+16, (write_ptr - send_ptr));
+	}else{
+		HOST_TO_LE_16(buff+16, 1);
+	}
 	
 
   ret = aci_gatt_update_char_value_ext(connection_handle, accServHandle, accCharHandle, 1, 18, 0, 18, buff);
