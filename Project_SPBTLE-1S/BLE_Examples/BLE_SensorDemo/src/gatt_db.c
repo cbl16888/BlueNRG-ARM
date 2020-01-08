@@ -195,11 +195,11 @@ tBleStatus FIFO_Notify(void)
   HOST_TO_LE_16(buff+8,send_ptr->AXIS_GX);
   HOST_TO_LE_16(buff+10,send_ptr->AXIS_GZ);
 	HOST_TO_LE_32(buff+12,send_ptr->TIMESTAMP);
-	debug = (write_ptr - send_ptr);
 	if((write_ptr - send_ptr) < 250 && (write_ptr - send_ptr) > 0){
 		HOST_TO_LE_16(buff+16, (write_ptr - send_ptr));
 	}else{
-		HOST_TO_LE_16(buff+16, 1);
+		uint16_t temp= (write_ptr - send_ptr) + 250;
+		HOST_TO_LE_16(buff+16, temp);
 	}
 	
 
