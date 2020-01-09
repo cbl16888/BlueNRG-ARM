@@ -301,9 +301,9 @@ int main(void)
   }
   
   /* Application demo Led Init */
-//  SdkEvalLedInit(LED2); //Activity led
+  SdkEvalLedInit(LED2); //Activity led
 //  SdkEvalLedInit(LED3); //Error led
-//  SdkEvalLedOn(LED2);
+ //SdkEvalLedOn(LED2);
 //  SdkEvalLedOff(LED3);
 
   PRINTF("BlueNRG-1 BLE Sensor Demo Application (version: %s)\r\n", BLE_SENSOR_VERSION_STRING);

@@ -282,7 +282,7 @@ void Set_DeviceConnectable(void)
 #if UPDATE_CONN_PARAM      
   /* Connection parameter update request */
   if(APP_FLAG(CONNECTED) && !APP_FLAG(L2CAP_PARAM_UPD_SENT) && l2cap_req_timer_expired){
-    aci_l2cap_connection_parameter_update_req(connection_handle, 6, 10, 0, 3200);
+    aci_l2cap_connection_parameter_update_req(connection_handle, 10, 10, 0, 3200);
     aci_gatt_exchange_config(connection_handle);
     APP_FLAG_SET(L2CAP_PARAM_UPD_SENT);
 		APP_FLAG_SET(LOW_POWER);
@@ -297,7 +297,7 @@ void Set_DeviceConnectable(void)
 	if(APP_FLAG(CONNECTED)){
 		if(APP_FLAG(SET_HIGH_POWER)){
 			aci_hal_set_tx_power_level(1, 7); 
-			aci_l2cap_connection_parameter_update_req(connection_handle, 6, 10, 0, 3200); 
+			aci_l2cap_connection_parameter_update_req(connection_handle, 10, 10, 0, 3200); 
 			aci_gatt_exchange_config(connection_handle);
 		}else if(APP_FLAG(SET_LOW_POWER)){
 			aci_hal_set_tx_power_level(1, 5); 
@@ -353,12 +353,14 @@ void aci_l2cap_connection_update_resp_event(uint16_t Connection_Handle,
 			APP_FLAG_CLEAR(LOW_POWER);
 			APP_FLAG_SET(HIGH_POWER);
 			PRINTF("High Power mode activated \n");
+			//SdkEvalLedOn(LED2);
 		}
 		if(APP_FLAG(SET_LOW_POWER)){
 			APP_FLAG_CLEAR(SET_LOW_POWER);
 			APP_FLAG_CLEAR(HIGH_POWER);
 			APP_FLAG_SET(LOW_POWER);
 			PRINTF("Low Power mode activated \n");
+			//SdkEvalLedOff(LED2);
 		}
 	}else{
 		PRINTF("Connection update refused \n");
