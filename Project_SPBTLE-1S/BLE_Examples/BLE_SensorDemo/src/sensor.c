@@ -282,7 +282,7 @@ void Set_DeviceConnectable(void)
 #if UPDATE_CONN_PARAM      
   /* Connection parameter update request */
   if(APP_FLAG(CONNECTED) && !APP_FLAG(L2CAP_PARAM_UPD_SENT) && l2cap_req_timer_expired){
-    aci_l2cap_connection_parameter_update_req(connection_handle, 45, 65, 5, 3200);
+    aci_l2cap_connection_parameter_update_req(connection_handle, 45, 65, 5, 500);
     aci_gatt_exchange_config(connection_handle);
     APP_FLAG_SET(L2CAP_PARAM_UPD_SENT);
 		APP_FLAG_SET(LOW_POWER);
@@ -297,11 +297,11 @@ void Set_DeviceConnectable(void)
 	if(APP_FLAG(CONNECTED)){
 		if(APP_FLAG(SET_HIGH_POWER)){
 			aci_hal_set_tx_power_level(1, 7); 
-			aci_l2cap_connection_parameter_update_req(connection_handle, 15, 25, 5, 3200); 
+			aci_l2cap_connection_parameter_update_req(connection_handle, 15, 25, 5, 500); 
 			aci_gatt_exchange_config(connection_handle);
 		}else if(APP_FLAG(SET_LOW_POWER)){
 			aci_hal_set_tx_power_level(1, 5); 
-			aci_l2cap_connection_parameter_update_req(connection_handle, 45, 65, 5, 3200); 
+			aci_l2cap_connection_parameter_update_req(connection_handle, 45, 65, 5, 500); 
 			aci_gatt_exchange_config(connection_handle);
 		}
 	}
@@ -382,11 +382,15 @@ void hci_disconnection_complete_event(uint8_t Status,
                                       uint16_t Connection_Handle,
                                       uint8_t Reason)
 {
-  APP_FLAG_CLEAR(CONNECTED);
   /* Make the device connectable again. */
+	APP_FLAG_CLEAR(CONNECTED);
   APP_FLAG_SET(SET_CONNECTABLE);
   APP_FLAG_CLEAR(NOTIFICATIONS_ENABLED);
   APP_FLAG_CLEAR(TX_BUFFER_FULL);
+	APP_FLAG_CLEAR(HIGH_POWER);
+	APP_FLAG_CLEAR(SET_HIGH_POWER);
+	APP_FLAG_CLEAR(LOW_POWER);
+	APP_FLAG_CLEAR(SET_LOW_POWER);
 	/* Restart pointers*/
 	write_ptr = send_ptr = &FIFO_data[0];
 	/*Stop the current timer*/
