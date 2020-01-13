@@ -153,24 +153,7 @@
           <Name>UL2CM3(-S0 -C0 -P0 )  -FN1 -FC1000 -FD200002CC -FF0STBlueNRG -FL028000 -FS010040000 -FP0($$Device:BlueNRG-1$Flash\STBlueNRG.FLM)</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint>
-        <Bp>
-          <Number>0</Number>
-          <Type>0</Type>
-          <LineNumber>346</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>268758696</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../../src/sensor.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\BLE_SensorDemo\../../src/sensor.c\346</Expression>
-        </Bp>
-      </Breakpoint>
+      <Breakpoint/>
       <WatchWindow1>
         <Ww>
           <count>0</count>
@@ -256,6 +239,11 @@
           <count>16</count>
           <WinNumber>1</WinNumber>
           <ItemText>debug</ItemText>
+        </Ww>
+        <Ww>
+          <count>17</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>l2cap_req_timer_expired</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>

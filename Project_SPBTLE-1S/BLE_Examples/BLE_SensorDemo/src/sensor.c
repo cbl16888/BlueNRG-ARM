@@ -391,6 +391,7 @@ void hci_disconnection_complete_event(uint8_t Status,
 	APP_FLAG_CLEAR(SET_HIGH_POWER);
 	APP_FLAG_CLEAR(LOW_POWER);
 	APP_FLAG_CLEAR(SET_LOW_POWER);
+	APP_FLAG_CLEAR(L2CAP_PARAM_UPD_SENT);
 	/* Restart pointers*/
 	write_ptr = send_ptr = &FIFO_data[0];
 	/*Stop the current timer*/
@@ -481,7 +482,7 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 		if(Attr_Data[0]==0x01){
 				APP_FLAG_SET(NOTIFICATIONS_ENABLED);
 				/*Start Timer*/
-				HAL_VTimerStart_ms(0, 20); //Timer expires after 20ms (50Hz)
+				HAL_VTimerStart_ms(0, 19); //Timer expires after 19ms (50Hz)
 				/*Empty LSM6DS3 FIFO */
 				lsm6ds3_fifo_mode_set(&dev_ctx, LSM6DS3_BYPASS_MODE);
 				Clock_Wait(1);
@@ -505,7 +506,7 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 		if(Attr_Data[0]==0x01){
 			/*Stop Timer and restart it*/
 			HAL_VTimer_Stop(0);
-			HAL_VTimerStart_ms(0, 20); //Timer expires after 20ms (50Hz)
+			HAL_VTimerStart_ms(0, 19); //Timer expires after 20ms (50Hz)
 			/*Clear FIFO level and stop notifications of old data*/
 			level=0;
 			i=0;
