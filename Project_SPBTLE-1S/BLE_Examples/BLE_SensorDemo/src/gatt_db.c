@@ -185,7 +185,7 @@ tBleStatus FIFO_Notify(void)
 {
   uint8_t buff[18]; //make room for 6*8 bits of data
   tBleStatus ret;
-	;
+	uint16_t unsent = 0;
   //PRINTF("Test %u \n", i);
 
 	HOST_TO_LE_16(buff,-send_ptr->AXIS_Y);
@@ -196,12 +196,11 @@ tBleStatus FIFO_Notify(void)
   HOST_TO_LE_16(buff+10,send_ptr->AXIS_GZ);
 	HOST_TO_LE_32(buff+12,send_ptr->TIMESTAMP);
 	if((write_ptr - send_ptr) < 250 && (write_ptr - send_ptr) > 0){
-		HOST_TO_LE_16(buff+16, (write_ptr - send_ptr));
+		unsent = (write_ptr - send_ptr);
 	}else{
-		uint16_t temp= (write_ptr - send_ptr) + 250;
-		HOST_TO_LE_16(buff+16, temp);
+		unsent = (write_ptr - send_ptr) + 250;
 	}
-	
+	HOST_TO_LE_16(buff+16, unsent);
 
   ret = aci_gatt_update_char_value_ext(connection_handle, accServHandle, accCharHandle, 1, 18, 0, 18, buff);
   if (ret == BLE_STATUS_SUCCESS){
@@ -213,11 +212,10 @@ tBleStatus FIFO_Notify(void)
   }else if(ret == BLE_STATUS_INSUFFICIENT_RESOURCES){
 	  APP_FLAG_SET(TX_BUFFER_FULL);
   }
-	/*Power management*/
-	if((write_ptr - send_ptr > 20) && APP_FLAG(LOW_POWER))
-		APP_FLAG_SET(SET_HIGH_POWER);
-	else if ((write_ptr - send_ptr < 20) && (write_ptr - send_ptr>0) &&  APP_FLAG(HIGH_POWER))
-		APP_FLAG_SET(SET_LOW_POWER);
+	/*Notify management*/
+	if(unsent == 1){
+		APP_FLAG_CLEAR(FIFO_NOTIFY);
+	}
 
 	int dummy = write_ptr-send_ptr;
 	PRINTF("%i \n", write_ptr-send_ptr);

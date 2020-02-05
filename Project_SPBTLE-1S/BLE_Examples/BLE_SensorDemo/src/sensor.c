@@ -282,29 +282,15 @@ void Set_DeviceConnectable(void)
 #if UPDATE_CONN_PARAM      
   /* Connection parameter update request */
   if(APP_FLAG(CONNECTED) && !APP_FLAG(L2CAP_PARAM_UPD_SENT) && l2cap_req_timer_expired){
-    aci_l2cap_connection_parameter_update_req(connection_handle, 45, 65, 5, 500);
+    aci_l2cap_connection_parameter_update_req(connection_handle, 6, 10, 20, 1000);
     aci_gatt_exchange_config(connection_handle);
     APP_FLAG_SET(L2CAP_PARAM_UPD_SENT);
-		APP_FLAG_SET(LOW_POWER);
   }
 #endif
 
   if(APP_FLAG(CONNECTED) && !APP_FLAG(TX_BUFFER_FULL) && APP_FLAG(FIFO_NOTIFY)) {
     FIFO_Notify();
   }
-	
-	/* Power management */
-	if(APP_FLAG(CONNECTED)){
-		if(APP_FLAG(SET_HIGH_POWER)){
-			aci_hal_set_tx_power_level(1, 7); 
-			aci_l2cap_connection_parameter_update_req(connection_handle, 15, 25, 5, 500); 
-			aci_gatt_exchange_config(connection_handle);
-		}else if(APP_FLAG(SET_LOW_POWER)){
-			aci_hal_set_tx_power_level(1, 5); 
-			aci_l2cap_connection_parameter_update_req(connection_handle, 45, 65, 5, 500); 
-			aci_gatt_exchange_config(connection_handle);
-		}
-	}
 }
 
 /* ***************** BlueNRG-1 Stack Callbacks ********************************/
@@ -329,6 +315,15 @@ void hci_le_connection_complete_event(uint8_t Status,
   connection_handle = Connection_Handle;
   APP_FLAG_SET(CONNECTED);
 	
+	/*Connection update */
+	#if UPDATE_CONN_PARAM    
+		l2cap_request_sent = FALSE;
+		HAL_VTimerStart_ms(UPDATE_TIMER, CLOCK_SECOND*2);
+		{
+			l2cap_req_timer_expired = FALSE;
+		}
+	#endif
+	
   PRINTF("Device connected \n");
     
 }/* end hci_le_connection_complete_event() */
@@ -347,23 +342,11 @@ void aci_l2cap_connection_update_resp_event(uint16_t Connection_Handle,
 	if(Result==0)
 	{
 		PRINTF("Connection update accepted \n");
+		//SdkEvalLedOn(LED2);
 		l2cap_request_accepted=TRUE;
-		if(APP_FLAG(SET_HIGH_POWER)){
-			APP_FLAG_CLEAR(SET_HIGH_POWER);
-			APP_FLAG_CLEAR(LOW_POWER);
-			APP_FLAG_SET(HIGH_POWER);
-			PRINTF("High Power mode activated \n");
-			//SdkEvalLedOn(LED2);
-		}
-		if(APP_FLAG(SET_LOW_POWER)){
-			APP_FLAG_CLEAR(SET_LOW_POWER);
-			APP_FLAG_CLEAR(HIGH_POWER);
-			APP_FLAG_SET(LOW_POWER);
-			PRINTF("Low Power mode activated \n");
-			//SdkEvalLedOff(LED2);
-		}
 	}else{
 		PRINTF("Connection update refused \n");
+		//SdkEvalLedOff(LED2);
 		l2cap_request_accepted=FALSE;
 	}
 }
@@ -387,10 +370,6 @@ void hci_disconnection_complete_event(uint8_t Status,
   APP_FLAG_SET(SET_CONNECTABLE);
   APP_FLAG_CLEAR(NOTIFICATIONS_ENABLED);
   APP_FLAG_CLEAR(TX_BUFFER_FULL);
-	APP_FLAG_CLEAR(HIGH_POWER);
-	APP_FLAG_CLEAR(SET_HIGH_POWER);
-	APP_FLAG_CLEAR(LOW_POWER);
-	APP_FLAG_CLEAR(SET_LOW_POWER);
 	APP_FLAG_CLEAR(L2CAP_PARAM_UPD_SENT);
 	/* Restart pointers*/
 	write_ptr = send_ptr = &FIFO_data[0];
@@ -491,14 +470,6 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 				lsm6ds3_timestamp_rst_set(&dev_ctx);
 				/* Retrieve data */
 				Data_Read();
-				/*Connection update */
-				#if UPDATE_CONN_PARAM    
-					l2cap_request_sent = FALSE;
-					HAL_VTimerStart_ms(UPDATE_TIMER, CLOCK_SECOND*2);
-					{
-						l2cap_req_timer_expired = FALSE;
-					}
-				#endif
 		}
 		
 	}
@@ -552,6 +523,7 @@ void Data_Read(void){
 	dev_ctx.write_reg = platform_write;
 	dev_ctx.read_reg = platform_read;
 	uint8_t nombredeSample[1];
+	uint16_t unsent =0;
 	nombredeSample[0] = 18;
 	/* Retrieve the most recent samples */
 	LSM6DS3_IO_Read(&buffer[0], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_OUT_X_L_XL, 6);
@@ -579,7 +551,15 @@ void Data_Read(void){
 		write_ptr=&FIFO_data[0];
 	
 	/* Set flag to notify */
-	APP_FLAG_SET(FIFO_NOTIFY);
+	if((write_ptr - send_ptr) < 250 && (write_ptr - send_ptr) > 0){
+		unsent = (write_ptr - send_ptr);
+	}else{
+		unsent = (write_ptr - send_ptr) + 250;
+	}
+
+	if(unsent > 4){
+		APP_FLAG_SET(FIFO_NOTIFY);
+	}
 }
 
 
