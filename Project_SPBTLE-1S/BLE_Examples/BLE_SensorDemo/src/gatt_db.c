@@ -217,7 +217,6 @@ tBleStatus FIFO_Notify(void)
 		APP_FLAG_CLEAR(FIFO_NOTIFY);
 	}
 
-	int dummy = write_ptr-send_ptr;
 	PRINTF("%i \n", write_ptr-send_ptr);
   return BLE_STATUS_SUCCESS;
 }

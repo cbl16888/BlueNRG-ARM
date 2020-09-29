@@ -12,4 +12,5 @@ loop				SUBS R0, R0, #1
 					POP {r4,pc}
 					ENDP
 						
-					END						
+					END
+						

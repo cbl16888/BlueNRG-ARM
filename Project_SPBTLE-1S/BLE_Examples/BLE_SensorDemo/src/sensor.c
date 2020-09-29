@@ -455,8 +455,6 @@ void aci_gatt_attribute_modified_event(uint16_t Connection_Handle,
 		lsm6ds3_ctx_t dev_ctx;
 	  dev_ctx.write_reg = platform_write;
 	  dev_ctx.read_reg = platform_read;
-		uint8_t fifo_status;
-		uint8_t dummytempReg[2]= {0, 0};
 	if(Attr_Handle == accCharHandle + 2){ //For notifications
 		if(Attr_Data[0]==0x01){
 				APP_FLAG_SET(NOTIFICATIONS_ENABLED);
@@ -519,12 +517,7 @@ void aci_hal_end_of_radio_activity_event(uint8_t Last_State,
  * Return         : None
  *******************************************************************************/
 void Data_Read(void){
-	static lsm6ds3_ctx_t dev_ctx;
-	dev_ctx.write_reg = platform_write;
-	dev_ctx.read_reg = platform_read;
-	uint8_t nombredeSample[1];
 	uint16_t unsent =0;
-	nombredeSample[0] = 18;
 	/* Retrieve the most recent samples */
 	LSM6DS3_IO_Read(&buffer[0], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_OUT_X_L_XL, 6);
 	LSM6DS3_IO_Read(&buffer[6], LSM6DS3_XG_MEMS_ADDRESS, LSM6DS3_XG_OUT_X_L_G, 6);

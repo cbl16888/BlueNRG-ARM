@@ -328,7 +328,6 @@ int main(void)
   /*LSM6DS3 FIFO init*/
   LSM6DS3_FIFO_init();
 	
-  uint8_t fifo_status;
   while(1)
   {
 
