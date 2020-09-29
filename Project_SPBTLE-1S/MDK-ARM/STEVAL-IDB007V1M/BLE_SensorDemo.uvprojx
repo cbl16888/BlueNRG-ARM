@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>LS_SOURCE=LS_SOURCE_EXTERNAL_32KHZ SMPS_INDUCTOR=SMPS_INDUCTOR_10uH BLUENRG1_DEVICE HS_SPEED_XTAL=HS_SPEED_XTAL_32MHZ USER_BUTTON=BUTTON_2</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\inc;..\..\..\..\..\Library\hal\inc;..\..\..\..\..\Library\BlueNRG1_Periph_Driver\inc;..\..\..\..\..\Library\CMSIS\Device\ST\BlueNRG1\Include;..\..\..\..\..\Library\CMSIS\Include;..\..\..\..\..\Library\Bluetooth_LE\inc;..\..\..\..\..\Library\BLE_Application\layers_inc;..\..\..\..\..\Library\BLE_Application\Utils\inc;..\..\..\..\..\Library\BLE_Application\OTA\inc;..\..\..\..\..\Library\SDK_Eval_BlueNRG1\inc</IncludePath>
+              <IncludePath>..\..\inc;..\..\..\Library\hal\inc;..\..\..\Library\BlueNRG1_Periph_Driver\inc;..\..\..\Library\CMSIS\Device\ST\BlueNRG1\Include;..\..\..\Library\CMSIS\Include;..\..\..\Library\Bluetooth_LE\inc;..\..\..\Library\BLE_Application\layers_inc;..\..\..\Library\BLE_Application\Utils\inc;..\..\..\Library\BLE_Application\OTA\inc;..\..\..\Library\SDK_Eval_BlueNRG1\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -385,27 +385,27 @@
             <File>
               <FileName>clock.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/hal/src/clock.c</FilePath>
+              <FilePath>../../../Library/hal/src/clock.c</FilePath>
             </File>
             <File>
               <FileName>context_switch.s</FileName>
               <FileType>2</FileType>
-              <FilePath>../../../../../Library/hal/src/context_switch.s</FilePath>
+              <FilePath>../../../Library/hal/src/context_switch.s</FilePath>
             </File>
             <File>
               <FileName>miscutil.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/hal/src/miscutil.c</FilePath>
+              <FilePath>../../../Library/hal/src/miscutil.c</FilePath>
             </File>
             <File>
               <FileName>osal.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/hal/src/osal.c</FilePath>
+              <FilePath>../../../Library/hal/src/osal.c</FilePath>
             </File>
             <File>
               <FileName>sleep.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/hal/src/sleep.c</FilePath>
+              <FilePath>../../../Library/hal/src/sleep.c</FilePath>
             </File>
             <File>
               <FileName>gp_timer.c</FileName>
@@ -420,67 +420,67 @@
             <File>
               <FileName>BlueNRG1_adc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_adc.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_adc.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_dma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_dma.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_dma.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_flash.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_flash.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_flash.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_gpio.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_gpio.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_i2c.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_i2c.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_i2c.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_mft.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_mft.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_mft.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_pka.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_pka.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_pka.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_rtc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_rtc.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_rtc.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_spi.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_spi.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_sysCtrl.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_sysCtrl.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_sysCtrl.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_uart.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_uart.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_wdg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_wdg.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_wdg.c</FilePath>
             </File>
             <File>
               <FileName>misc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/misc.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/misc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -559,7 +559,7 @@
             <File>
               <FileName>OTA_btl.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BLE_Application/OTA/src/OTA_btl.c</FilePath>
+              <FilePath>../../../Library/BLE_Application/OTA/src/OTA_btl.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -569,47 +569,47 @@
             <File>
               <FileName>LPS25HB.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/LPS25HB.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/LPS25HB.c</FilePath>
             </File>
             <File>
               <FileName>LSM6DS3.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/LSM6DS3.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/LSM6DS3.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_Button.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Button.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Button.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_Com.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Com.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Com.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_Config.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Config.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Config.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_I2C.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_I2C.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_I2C.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_Led.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Led.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Led.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_SPI.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_SPI.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_SPI.c</FilePath>
             </File>
             <File>
               <FileName>lsm6ds3_reg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\Library\BlueNRG1_Periph_Driver\src\lsm6ds3_reg.c</FilePath>
+              <FilePath>..\..\..\Library\BlueNRG1_Periph_Driver\src\lsm6ds3_reg.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -619,17 +619,17 @@
             <File>
               <FileName>libbluenrg1_stack.a</FileName>
               <FileType>4</FileType>
-              <FilePath>../../../../../Library/Bluetooth_LE/library/libbluenrg1_stack.a</FilePath>
+              <FilePath>../../../Library/Bluetooth_LE/library/libbluenrg1_stack.a</FilePath>
             </File>
             <File>
               <FileName>libcrypto.a</FileName>
               <FileType>4</FileType>
-              <FilePath>../../../../../Library/cryptolib/libcrypto.a</FilePath>
+              <FilePath>../../../Library/cryptolib/libcrypto.a</FilePath>
             </File>
             <File>
               <FileName>stack_user_cfg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/Bluetooth_LE/src/stack_user_cfg.c</FilePath>
+              <FilePath>../../../Library/Bluetooth_LE/src/stack_user_cfg.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -639,7 +639,7 @@
             <File>
               <FileName>system_bluenrg1.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/CMSIS/Device/ST/BlueNRG1/Source/system_bluenrg1.c</FilePath>
+              <FilePath>../../../Library/CMSIS/Device/ST/BlueNRG1/Source/system_bluenrg1.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1054,27 +1054,27 @@
             <File>
               <FileName>clock.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/hal/src/clock.c</FilePath>
+              <FilePath>../../../Library/hal/src/clock.c</FilePath>
             </File>
             <File>
               <FileName>context_switch.s</FileName>
               <FileType>2</FileType>
-              <FilePath>../../../../../Library/hal/src/context_switch.s</FilePath>
+              <FilePath>../../../Library/hal/src/context_switch.s</FilePath>
             </File>
             <File>
               <FileName>miscutil.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/hal/src/miscutil.c</FilePath>
+              <FilePath>../../../Library/hal/src/miscutil.c</FilePath>
             </File>
             <File>
               <FileName>osal.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/hal/src/osal.c</FilePath>
+              <FilePath>../../../Library/hal/src/osal.c</FilePath>
             </File>
             <File>
               <FileName>sleep.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/hal/src/sleep.c</FilePath>
+              <FilePath>../../../Library/hal/src/sleep.c</FilePath>
             </File>
             <File>
               <FileName>gp_timer.c</FileName>
@@ -1089,67 +1089,67 @@
             <File>
               <FileName>BlueNRG1_adc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_adc.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_adc.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_dma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_dma.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_dma.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_flash.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_flash.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_flash.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_gpio.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_gpio.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_i2c.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_i2c.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_i2c.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_mft.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_mft.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_mft.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_pka.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_pka.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_pka.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_rtc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_rtc.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_rtc.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_spi.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_spi.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_sysCtrl.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_sysCtrl.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_sysCtrl.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_uart.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_uart.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_wdg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_wdg.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_wdg.c</FilePath>
             </File>
             <File>
               <FileName>misc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/misc.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/misc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1159,7 +1159,7 @@
             <File>
               <FileName>OTA_btl.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BLE_Application/OTA/src/OTA_btl.c</FilePath>
+              <FilePath>../../../Library/BLE_Application/OTA/src/OTA_btl.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1169,47 +1169,47 @@
             <File>
               <FileName>LPS25HB.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/LPS25HB.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/LPS25HB.c</FilePath>
             </File>
             <File>
               <FileName>LSM6DS3.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/LSM6DS3.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/LSM6DS3.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_Button.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Button.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Button.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_Com.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Com.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Com.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_Config.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Config.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Config.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_I2C.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_I2C.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_I2C.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_Led.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Led.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Led.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_SPI.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_SPI.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_SPI.c</FilePath>
             </File>
             <File>
               <FileName>lsm6ds3_reg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\Library\BlueNRG1_Periph_Driver\src\lsm6ds3_reg.c</FilePath>
+              <FilePath>..\..\..\Library\BlueNRG1_Periph_Driver\src\lsm6ds3_reg.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1219,17 +1219,17 @@
             <File>
               <FileName>libbluenrg1_stack.a</FileName>
               <FileType>4</FileType>
-              <FilePath>../../../../../Library/Bluetooth_LE/library/libbluenrg1_stack.a</FilePath>
+              <FilePath>../../../Library/Bluetooth_LE/library/libbluenrg1_stack.a</FilePath>
             </File>
             <File>
               <FileName>libcrypto.a</FileName>
               <FileType>4</FileType>
-              <FilePath>../../../../../Library/cryptolib/libcrypto.a</FilePath>
+              <FilePath>../../../Library/cryptolib/libcrypto.a</FilePath>
             </File>
             <File>
               <FileName>stack_user_cfg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/Bluetooth_LE/src/stack_user_cfg.c</FilePath>
+              <FilePath>../../../Library/Bluetooth_LE/src/stack_user_cfg.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1239,7 +1239,7 @@
             <File>
               <FileName>system_bluenrg1.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/CMSIS/Device/ST/BlueNRG1/Source/system_bluenrg1.c</FilePath>
+              <FilePath>../../../Library/CMSIS/Device/ST/BlueNRG1/Source/system_bluenrg1.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1654,27 +1654,27 @@
             <File>
               <FileName>clock.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/hal/src/clock.c</FilePath>
+              <FilePath>../../../Library/hal/src/clock.c</FilePath>
             </File>
             <File>
               <FileName>context_switch.s</FileName>
               <FileType>2</FileType>
-              <FilePath>../../../../../Library/hal/src/context_switch.s</FilePath>
+              <FilePath>../../../Library/hal/src/context_switch.s</FilePath>
             </File>
             <File>
               <FileName>miscutil.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/hal/src/miscutil.c</FilePath>
+              <FilePath>../../../Library/hal/src/miscutil.c</FilePath>
             </File>
             <File>
               <FileName>osal.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/hal/src/osal.c</FilePath>
+              <FilePath>../../../Library/hal/src/osal.c</FilePath>
             </File>
             <File>
               <FileName>sleep.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/hal/src/sleep.c</FilePath>
+              <FilePath>../../../Library/hal/src/sleep.c</FilePath>
             </File>
             <File>
               <FileName>gp_timer.c</FileName>
@@ -1689,67 +1689,67 @@
             <File>
               <FileName>BlueNRG1_adc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_adc.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_adc.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_dma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_dma.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_dma.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_flash.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_flash.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_flash.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_gpio.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_gpio.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_i2c.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_i2c.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_i2c.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_mft.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_mft.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_mft.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_pka.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_pka.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_pka.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_rtc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_rtc.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_rtc.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_spi.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_spi.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_sysCtrl.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_sysCtrl.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_sysCtrl.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_uart.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_uart.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_wdg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_wdg.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_wdg.c</FilePath>
             </File>
             <File>
               <FileName>misc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/misc.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/misc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1759,7 +1759,7 @@
             <File>
               <FileName>OTA_btl.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BLE_Application/OTA/src/OTA_btl.c</FilePath>
+              <FilePath>../../../Library/BLE_Application/OTA/src/OTA_btl.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1769,47 +1769,47 @@
             <File>
               <FileName>LPS25HB.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/LPS25HB.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/LPS25HB.c</FilePath>
             </File>
             <File>
               <FileName>LSM6DS3.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/LSM6DS3.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/LSM6DS3.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_Button.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Button.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Button.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_Com.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Com.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Com.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_Config.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Config.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Config.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_I2C.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_I2C.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_I2C.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_Led.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Led.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Led.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_SPI.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_SPI.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_SPI.c</FilePath>
             </File>
             <File>
               <FileName>lsm6ds3_reg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\Library\BlueNRG1_Periph_Driver\src\lsm6ds3_reg.c</FilePath>
+              <FilePath>..\..\..\Library\BlueNRG1_Periph_Driver\src\lsm6ds3_reg.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1819,17 +1819,17 @@
             <File>
               <FileName>libbluenrg1_stack.a</FileName>
               <FileType>4</FileType>
-              <FilePath>../../../../../Library/Bluetooth_LE/library/libbluenrg1_stack.a</FilePath>
+              <FilePath>../../../Library/Bluetooth_LE/library/libbluenrg1_stack.a</FilePath>
             </File>
             <File>
               <FileName>libcrypto.a</FileName>
               <FileType>4</FileType>
-              <FilePath>../../../../../Library/cryptolib/libcrypto.a</FilePath>
+              <FilePath>../../../Library/cryptolib/libcrypto.a</FilePath>
             </File>
             <File>
               <FileName>stack_user_cfg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/Bluetooth_LE/src/stack_user_cfg.c</FilePath>
+              <FilePath>../../../Library/Bluetooth_LE/src/stack_user_cfg.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1839,7 +1839,7 @@
             <File>
               <FileName>system_bluenrg1.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/CMSIS/Device/ST/BlueNRG1/Source/system_bluenrg1.c</FilePath>
+              <FilePath>../../../Library/CMSIS/Device/ST/BlueNRG1/Source/system_bluenrg1.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2254,27 +2254,27 @@
             <File>
               <FileName>clock.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/hal/src/clock.c</FilePath>
+              <FilePath>../../../Library/hal/src/clock.c</FilePath>
             </File>
             <File>
               <FileName>context_switch.s</FileName>
               <FileType>2</FileType>
-              <FilePath>../../../../../Library/hal/src/context_switch.s</FilePath>
+              <FilePath>../../../Library/hal/src/context_switch.s</FilePath>
             </File>
             <File>
               <FileName>miscutil.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/hal/src/miscutil.c</FilePath>
+              <FilePath>../../../Library/hal/src/miscutil.c</FilePath>
             </File>
             <File>
               <FileName>osal.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/hal/src/osal.c</FilePath>
+              <FilePath>../../../Library/hal/src/osal.c</FilePath>
             </File>
             <File>
               <FileName>sleep.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/hal/src/sleep.c</FilePath>
+              <FilePath>../../../Library/hal/src/sleep.c</FilePath>
             </File>
             <File>
               <FileName>gp_timer.c</FileName>
@@ -2289,67 +2289,67 @@
             <File>
               <FileName>BlueNRG1_adc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_adc.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_adc.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_dma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_dma.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_dma.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_flash.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_flash.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_flash.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_gpio.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_gpio.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_i2c.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_i2c.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_i2c.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_mft.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_mft.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_mft.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_pka.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_pka.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_pka.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_rtc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_rtc.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_rtc.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_spi.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_spi.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_sysCtrl.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_sysCtrl.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_sysCtrl.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_uart.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_uart.c</FilePath>
             </File>
             <File>
               <FileName>BlueNRG1_wdg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_wdg.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/BlueNRG1_wdg.c</FilePath>
             </File>
             <File>
               <FileName>misc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BlueNRG1_Periph_Driver/src/misc.c</FilePath>
+              <FilePath>../../../Library/BlueNRG1_Periph_Driver/src/misc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2359,7 +2359,7 @@
             <File>
               <FileName>OTA_btl.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/BLE_Application/OTA/src/OTA_btl.c</FilePath>
+              <FilePath>../../../Library/BLE_Application/OTA/src/OTA_btl.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2369,47 +2369,47 @@
             <File>
               <FileName>LPS25HB.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/LPS25HB.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/LPS25HB.c</FilePath>
             </File>
             <File>
               <FileName>LSM6DS3.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/LSM6DS3.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/LSM6DS3.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_Button.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Button.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Button.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_Com.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Com.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Com.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_Config.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Config.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Config.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_I2C.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_I2C.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_I2C.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_Led.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Led.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_Led.c</FilePath>
             </File>
             <File>
               <FileName>SDK_EVAL_SPI.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_SPI.c</FilePath>
+              <FilePath>../../../Library/SDK_Eval_BlueNRG1/src/SDK_EVAL_SPI.c</FilePath>
             </File>
             <File>
               <FileName>lsm6ds3_reg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\..\Library\BlueNRG1_Periph_Driver\src\lsm6ds3_reg.c</FilePath>
+              <FilePath>..\..\..\Library\BlueNRG1_Periph_Driver\src\lsm6ds3_reg.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2419,17 +2419,17 @@
             <File>
               <FileName>libbluenrg1_stack.a</FileName>
               <FileType>4</FileType>
-              <FilePath>../../../../../Library/Bluetooth_LE/library/libbluenrg1_stack.a</FilePath>
+              <FilePath>../../../Library/Bluetooth_LE/library/libbluenrg1_stack.a</FilePath>
             </File>
             <File>
               <FileName>libcrypto.a</FileName>
               <FileType>4</FileType>
-              <FilePath>../../../../../Library/cryptolib/libcrypto.a</FilePath>
+              <FilePath>../../../Library/cryptolib/libcrypto.a</FilePath>
             </File>
             <File>
               <FileName>stack_user_cfg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/Bluetooth_LE/src/stack_user_cfg.c</FilePath>
+              <FilePath>../../../Library/Bluetooth_LE/src/stack_user_cfg.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2439,7 +2439,7 @@
             <File>
               <FileName>system_bluenrg1.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../../../../../Library/CMSIS/Device/ST/BlueNRG1/Source/system_bluenrg1.c</FilePath>
+              <FilePath>../../../Library/CMSIS/Device/ST/BlueNRG1/Source/system_bluenrg1.c</FilePath>
             </File>
           </Files>
         </Group>
